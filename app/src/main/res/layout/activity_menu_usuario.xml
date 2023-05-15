@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backgroud">
+
+    <ImageView
+        android:id="@+id/imagem"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="70dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logotipo_cadastro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        />
+
+    <ImageButton
+        android:id="@+id/usuario"
+        android:background="@color/transparent"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/icone_usuario"
+        app:layout_constraintEnd_toStartOf="@+id/estufas"
+        app:layout_constraintHorizontal_bias="0.225"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagem"
+        />
+
+    <Button
+        android:id="@+id/button_usuario"
+        android:background="@color/transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DADOS DE USUÁRIO"
+        android:textColor="@color/White"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/usuario"
+        app:layout_constraintStart_toStartOf="@id/usuario"
+        app:layout_constraintTop_toBottomOf="@id/usuario" />
+
+    <ImageButton
+        android:id="@+id/estufas"
+        android:background="@color/transparent"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/icone_estufa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/usuario"
+        app:layout_constraintTop_toTopOf="@+id/usuario"
+        />
+
+    <Button
+        android:id="@+id/button_estufas"
+        style="@style/recSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ESTUFAS"
+        android:textColor="@color/White"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/estufas"
+        app:layout_constraintStart_toStartOf="@id/estufas"
+        app:layout_constraintTop_toBottomOf="@+id/estufas" />
+
+    <ImageButton
+        android:id="@+id/fornecedores"
+        android:scaleType="fitCenter"
+        android:background="@color/transparent"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/icone_fornecedores"
+        app:layout_constraintEnd_toStartOf="@+id/assistencia"
+        app:layout_constraintHorizontal_bias="0.225"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_usuario" />
+
+    <Button
+        android:id="@+id/button_fornecedores"
+        style="@style/recSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FORNECEDORES"
+        android:textColor="@color/White"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/fornecedores"
+        app:layout_constraintStart_toStartOf="@id/fornecedores"
+        app:layout_constraintTop_toBottomOf="@id/fornecedores" />
+
+    <ImageButton
+        android:id="@+id/assistencia"
+        android:scaleType="fitCenter"
+        android:background="@color/transparent"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/icone_assistencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fornecedores"
+        app:layout_constraintTop_toTopOf="@+id/fornecedores" />
+
+    <Button
+        android:id="@+id/button_assistencia"
+        style="@style/recSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ASSISTÊNCIA"
+        android:textColor="@color/White"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/assistencia"
+        app:layout_constraintStart_toStartOf="@id/assistencia"
+        app:layout_constraintTop_toBottomOf="@+id/assistencia" />
+
+
+    <Button
+        android:id="@+id/button_sair"
+        style="@style/Button_Cadastro"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:text="Voltar"
+        android:layout_marginTop="120dp"
+        android:textColor="@color/White"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_fornecedores"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

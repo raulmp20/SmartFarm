@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConfigEstufaActivity"
+    android:background="@drawable/backgroud">
+
+    <ImageView
+        android:id="@+id/logotipo_login"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="70dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logotipo_cadastro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        />
+
+    <TextView
+        android:id="@+id/config"
+        style="@style/TextView"
+        android:text="CONFIGURAÇÕES"
+        android:textColor="@color/White"
+        android:textSize="25dp"
+        android:layout_marginTop="25dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logotipo_login"/>
+
+    <ImageView
+        android:id="@+id/img_config"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:src="@drawable/icone_configuracao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/config" />
+
+    <EditText
+        android:id="@+id/estufa_novo_nome"
+        android:background="@drawable/button_contorno"
+        android:layout_width="310dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:hint="NOVO NOME DA ESTUFA"
+        android:imeOptions="actionSend"
+        android:textColorHint="@color/White"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_config" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="56dp"
+        app:layout_constraintHorizontal_bias="0.31"
+        android:layout_marginTop="60dp"
+        android:text="LIGAR NOTIFICAÇÕES: "
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        android:checked="true"
+        android:textOff="OFF"
+        android:textOn="ON"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estufa_novo_nome"/>
+
+    <Spinner
+        android:id="@+id/plants_spinner"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="60dp"
+        android:text="PRODUÇÃO"
+        android:background="@drawable/button_contorno"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switch2" />
+
+    <Button
+        android:id="@+id/TrocaSenha_conta"
+        android:textColor="@color/White"
+        android:textSize="17.5dp"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="96dp"
+        android:layout_marginTop="40dp"
+        android:text="TROCAR SENHA"
+        android:background="@color/Blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/plants_spinner" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_voltar_config"
+        style="@style/ButtonEsq1"
+        android:layout_marginBottom="40dp"
+        android:text="VOLTAR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_salvar_config"
+        style="@style/ButtonDir1"
+        android:layout_marginBottom="40dp"
+        android:text="SALVAR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

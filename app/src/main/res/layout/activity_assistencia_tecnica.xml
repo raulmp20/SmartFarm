@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backgroud">
+
+    <ImageView
+        android:id="@+id/imagem"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="70dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logotipo_cadastro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        />
+
+    <ImageView
+        android:id="@+id/assistencia_icone"
+        android:layout_width="100dp"
+        android:background="@color/transparent"
+        android:layout_height="114dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="25dp"
+        android:src="@drawable/icone_balao_conversa"
+        app:layout_constraintEnd_toEndOf="@id/assistencia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagem" />
+
+    <TextView
+        android:id="@+id/assistencia"
+        android:layout_width="153dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="160dp"
+        android:textAlignment="center"
+        android:text="ASSISTÊNCIA"
+        android:textColor="@color/White"
+        android:textSize="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagem" />
+
+    <ImageButton
+        android:id="@+id/assistencia_fale_conosco"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="272dp"
+        android:background="@color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icone_assistencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assistencia" />
+
+    <Button
+        android:id="@+id/button_assistencia_fale_conosco"
+        style="@style/recSenha"
+        android:layout_width="115dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:text="FALE CONOSCO"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assistencia_fale_conosco" />
+
+    <ImageButton
+        android:id="@+id/assistencia_converse_com"
+        android:layout_width="84dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="72dp"
+        android:background="@color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icone_agricultor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assistencia" />
+
+    <Button
+        android:id="@+id/button_assistencia_converse_com"
+        style="@style/recSenha"
+        android:layout_width="115dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:text="FALE COM ESPECIALISTA"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.804"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assistencia_converse_com" />
+
+    <Button
+        android:id="@+id/voltar"
+        style="@style/Button_Cadastro"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="212dp"
+        android:text="VOLTAR"
+        android:textColor="@color/White"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assistencia_converse_com" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

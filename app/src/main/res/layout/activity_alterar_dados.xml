@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backgroud">
+
+    <ImageView
+        android:id="@+id/imagem"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="70dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logotipo_cadastro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        />
+
+    <ImageView
+        android:id="@+id/imagem1"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="70dp"
+        android:src="@drawable/icone_usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagem" />
+
+
+    <TextView
+        android:id="@+id/Email_novo"
+        style="@style/fundo_modulo"
+        android:layout_width="204dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="16dp"
+        android:text="NOVO E-MAIL: "
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imagem1" />
+
+    <EditText
+        android:id="@+id/Email_box_alt"
+        style="@style/fundo_modulo"
+        android:background="@drawable/button_contorno"
+        android:layout_width="256dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Email_novo" />
+
+
+    <TextView
+        android:id="@+id/Numero_novo"
+        style="@style/fundo_modulo"
+        android:layout_width="229dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="32dp"
+        android:text="NOVO NÚMERO: "
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Email_box_alt" />
+
+    <EditText
+        android:id="@+id/Numero_box_alt"
+        style="@style/fundo_modulo"
+        android:background="@drawable/button_contorno"
+        android:layout_width="256dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Numero_novo" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_salvar_dados"
+        style="@style/Button_Login"
+        android:layout_width="169dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="44dp"
+        android:text="Salvar"
+        android:textColor="@color/White"
+        app:layout_constraintTop_toBottomOf="@+id/Numero_box_alt"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="121dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_voltar_trocadados"
+        style="@style/Button_Cadastro"
+        android:layout_width="229dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="32dp"
+        android:text="VOLTAR"
+        android:textColor="@color/White"
+        app:layout_constraintTop_toBottomOf="@+id/button_salvar_dados"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="91dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

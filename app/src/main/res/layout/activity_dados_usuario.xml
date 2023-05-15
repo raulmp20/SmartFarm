@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backgroud">
+
+    <ImageView
+        android:id="@+id/imagem"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="70dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logotipo_cadastro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        />
+
+    <ImageView
+        android:id="@+id/imagem1"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="70dp"
+        android:src="@drawable/icone_usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagem" />
+
+
+    <TextView
+        android:id="@+id/Email_cadastrado"
+        style="@style/fundo_modulo"
+        android:layout_width="204dp"
+        android:layout_height="31dp"
+
+        android:layout_marginTop="12dp"
+        android:text="EMAIL CADASTRADO: "
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imagem1" />
+
+    <TextView
+        android:id="@+id/Email_box"
+        style="@style/fundo_modulo"
+        android:layout_width="256dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
+
+        android:background="@drawable/button_contorno"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Email_cadastrado" />
+
+    <TextView
+        android:id="@+id/Numero_cadastrado"
+        style="@style/fundo_modulo"
+        android:layout_width="229dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="36dp"
+        android:text="NÚMERO CADASTRADO: "
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Email_box" />
+
+    <TextView
+        android:id="@+id/Numero_box"
+        style="@style/fundo_modulo"
+        android:background="@drawable/button_contorno"
+        android:layout_width="256dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="70dp"
+
+        android:layout_marginTop="24dp"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Numero_cadastrado" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_troca_dados"
+        style="@style/Button_Login"
+        android:layout_width="169dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="120dp"
+        android:text="ALTERAR DADOS"
+        android:textColor="@color/White"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Numero_box"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_voltar_dados"
+        style="@style/Button_Cadastro"
+        android:layout_width="229dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="88dp"
+        android:text="VOLTAR"
+        android:textColor="@color/White"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_troca_dados"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

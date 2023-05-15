@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/backgroud">
+
+    <ImageView
+        android:id="@+id/logotipo_login"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="70dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logotipo_cadastro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        />
+
+    <TextView
+        android:id="@+id/Tittle_produtos"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/abaixo_estao"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/View"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logotipo_login" />
+
+    <View
+        android:id="@+id/View"
+        style="@style/View"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="39dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_voltar_products"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Tittle_produtos" />
+
+    <ScrollView
+        android:id="@+id/lista_produtos"
+        android:background="@drawable/button_view"
+        android:layout_width="match_parent"
+        android:layout_height="220sp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/View"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="220sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/View"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Substrato"
+                style="@style/Button_Cadastro"
+                android:text="SUBSTRATO"
+                android:layout_marginVertical="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Nutrientes"
+                style="@style/Button_Cadastro"
+                android:text="NUTRIENTES"
+                android:layout_marginVertical="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Plantas"
+                style="@style/Button_Cadastro"
+                android:text="PLANTAS"
+                android:layout_marginVertical="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Sementes"
+                style="@style/Button_Cadastro"
+                android:text="SEMENTES"
+                android:layout_marginVertical="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_voltar_products"
+        style="@style/Button_Login"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="100dp"
+        android:text="VOLTAR"
+        android:textColor="@color/White"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lista_produtos" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
