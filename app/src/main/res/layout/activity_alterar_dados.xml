@@ -37,13 +37,15 @@
         style="@style/fundo_modulo"
         android:layout_width="204dp"
         android:layout_height="31dp"
-        android:layout_marginStart="112dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp"
         android:text="NOVO E-MAIL: "
         android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/White"
         android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imagem1" />
 
     <EditText
@@ -52,11 +54,13 @@
         android:background="@drawable/button_contorno"
         android:layout_width="256dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="84dp"
         android:layout_marginStart="84dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/White"
         android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Email_novo" />
 
 
@@ -66,12 +70,14 @@
         android:layout_width="229dp"
         android:layout_height="28dp"
         android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginTop="32dp"
         android:text="NOVO NÚMERO: "
         android:textAlignment="center"
         android:textColor="@color/White"
-        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20dp"
         app:layout_constraintTop_toBottomOf="@id/Email_box_alt" />
 
     <EditText
@@ -81,34 +87,39 @@
         android:layout_width="256dp"
         android:layout_height="30dp"
         android:layout_marginStart="84dp"
+        android:layout_marginEnd="84dp"
         android:layout_marginTop="24dp"
         android:textColor="@color/White"
         android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Numero_novo" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/button_salvar_dados"
         style="@style/Button_Login"
-        android:layout_width="169dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
         android:text="Salvar"
         android:textColor="@color/White"
-        app:layout_constraintTop_toBottomOf="@+id/Numero_box_alt"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="121dp" />
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Numero_box_alt" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/button_voltar_trocadados"
         style="@style/Button_Cadastro"
-        android:layout_width="229dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="32dp"
-        android:text="VOLTAR"
+        android:layout_marginTop="15dp"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:text="Voltar"
         android:textColor="@color/White"
-        app:layout_constraintTop_toBottomOf="@+id/button_salvar_dados"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="91dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_salvar_dados"
+        tools:ignore="TouchTargetSizeCheck"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

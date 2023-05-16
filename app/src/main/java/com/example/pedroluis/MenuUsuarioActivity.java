@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,7 @@ public class MenuUsuarioActivity extends AppCompatActivity {
     String firstCheckMain = "Tgg";
     // Passando esse parâmrtro para as próximas telas
     String telefoneUser;
+    String emailUser;
 
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,7 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_usuario);
         Bundle extras = getIntent().getExtras();
         telefoneUser = extras.getString("telefoneUser");
+        emailUser = extras.getString("emailUser");
 
         // Representante dos botões do front-end para serem manipulados pelo back-end e enviados ao front-end
         Button usuario;
@@ -56,13 +59,15 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         usuario.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent goUsuario = new Intent(MenuUsuarioActivity.this,UsuarioActivity.class);
-            goUsuario.putExtra("telefoneUser",telefoneUser);
+            goUsuario.putExtra("telefoneU",telefoneUser);
+            goUsuario.putExtra("emailU",emailUser);
             startActivity(goUsuario);
         });
         usuario_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent goUsuarios = new Intent(MenuUsuarioActivity.this,UsuarioActivity.class);
-            goUsuarios.putExtra("telefoneUser",telefoneUser);
+            goUsuarios.putExtra("telefoneU",telefoneUser);
+            goUsuarios.putExtra("emailU",emailUser);
             startActivity(goUsuarios);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();

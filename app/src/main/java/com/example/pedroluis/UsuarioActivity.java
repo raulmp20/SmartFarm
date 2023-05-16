@@ -29,13 +29,13 @@ public class UsuarioActivity extends AppCompatActivity {
 
     private MqttAndroidClient mqttAndroidClient;
 
-    boolean auxParaPublicarUmaVez = true;
 
     private TextView email_cadas;
 
     private TextView phone_cadas;
 
     String telefoneUser;
+    String emailUser;
     String emailAntes;
 
     @Override
@@ -47,10 +47,14 @@ public class UsuarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_usuario);
         Bundle extras = getIntent().getExtras();
-        telefoneUser = extras.getString("telefoneUser");
+        telefoneUser = extras.getString("telefoneU");
+        emailUser = extras.getString("emailU");
 
         email_cadas = findViewById(R.id.Email_box);
         phone_cadas = findViewById(R.id.Numero_box);
+
+        phone_cadas.setText(telefoneUser);
+        email_cadas.setText(emailUser);
 
         Button trocaDados = findViewById(R.id.button_troca_dados);
         trocaDados.setOnClickListener(view -> {
@@ -84,15 +88,6 @@ public class UsuarioActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Infos/Email")) {
-                    //Adiciona as notificações retornadas pelo broker ao TextView
-                    emailAntes = mqttMessage.toString();
-                    email_cadas.setText(emailAntes);
-                }
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Infos/Telefone")){
-                    //Adiciona as notificações retornadas pelo broker ao TextView
-                    phone_cadas.setText(telefoneUser);
-                }
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
@@ -125,11 +120,6 @@ public class UsuarioActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
-                                if(auxParaPublicarUmaVez) {
-                                    //Publica no topico toda vez que se entra na página.
-                                    mqttHelper.publish(telefoneUser, "Smart_Farm/" + mqttHelper.getClientId() + "/GetInfos/Email");
-                                    auxParaPublicarUmaVez = false;
-                                }
                             }
 
                             @Override

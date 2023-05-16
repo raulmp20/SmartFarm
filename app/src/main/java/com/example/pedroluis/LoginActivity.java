@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                     String telefoneL = mqttMessage.toString();
                     Intent logado = new Intent(LoginActivity.this, MenuUsuarioActivity.class);
                     logado.putExtra("telefoneUser", telefoneL);
+                    logado.putExtra("emailUser", email);
                     startActivity(logado);
                     // Exclui essa tela ao sair para não guardar as info que pus nela
                     onRestart();
