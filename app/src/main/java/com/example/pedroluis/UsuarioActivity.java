@@ -59,7 +59,8 @@ public class UsuarioActivity extends AppCompatActivity {
         Button trocaDados = findViewById(R.id.button_troca_dados);
         trocaDados.setOnClickListener(view -> {
             Intent alterar  = new Intent(UsuarioActivity.this, AlterarDadosActivity.class);
-            alterar.putExtra("emailA", emailAntes);
+            alterar.putExtra("emailA", emailUser);
+            alterar.putExtra("telefoneA", telefoneUser);
             startActivity(alterar);
         });
 
@@ -68,6 +69,8 @@ public class UsuarioActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(view ->{
             Intent intent = new Intent(UsuarioActivity.this, MenuUsuarioActivity.class);
+            intent.putExtra("emailUser", emailUser);
+            intent.putExtra("telefoneUser", telefoneUser);
             startActivity(intent);
         });
     }

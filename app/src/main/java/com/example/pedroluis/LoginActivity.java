@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         // Recuperando a senha
         rec_senha.setOnClickListener(view -> {
             // Enviando um email para o usuário trocar a senha
-            Intent recuperar = new Intent(LoginActivity.this, ConfirmTokenAltSenhaActivity.class);
+            Intent recuperar = new Intent(LoginActivity.this, AlterarDadosEmailActivity.class);
             startActivity(recuperar);
         });
 

@@ -39,13 +39,17 @@ public class ConfirmTokenAltSenhaActivity extends AppCompatActivity {
 
         EditText token = findViewById(R.id.tokenCadastroo);
 
+        startMqtt();
+
         Button confirmToken = findViewById(R.id.Botao_Confirmar_ADT);
         confirmToken.setOnClickListener(view -> {
             String tokenAux = token.getText().toString();
             if(!tokenAux.isEmpty())
 
-                if (tokenAux.matches("^[0-9]{6}$"))
+                if (tokenAux.matches("^[0-9]{6}$")) {
+                    System.out.println(tokenAux);
                     mqttHelper.publish(tokenAux, "Smart_Farm/" + mqttHelper.getClientId() + "/Altera/Token");
+                }
                 else
                     Toast.makeText(ConfirmTokenAltSenhaActivity.this, "Token Inválido", Toast.LENGTH_SHORT).show();
             else
@@ -57,9 +61,9 @@ public class ConfirmTokenAltSenhaActivity extends AppCompatActivity {
 
         Button reenviarToken = findViewById(R.id.ReenviarCodigo_ADT);
 
-        //reenviarToken.setOnClickListener(view -> {
-        //  mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Changes/ResendToken");
-        //});
+        reenviarToken.setOnClickListener(view -> {
+          mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Altera/ReenviaToken");
+        });
 
 
 

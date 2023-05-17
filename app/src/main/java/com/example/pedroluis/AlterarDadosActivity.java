@@ -21,6 +21,7 @@ public class AlterarDadosActivity extends AppCompatActivity {
     String email;
 
     String emailAntes;
+    String telefoneAntes;
 
     @Override
     public void onBackPressed() {
@@ -32,6 +33,9 @@ public class AlterarDadosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alterar_dados);
         Bundle extras = getIntent().getExtras();
         emailAntes = extras.getString("emailA");
+        telefoneAntes = extras.getString("telefoneA");
+
+        startMqtt();
 
         EditText email_alt = findViewById(R.id.Email_box_alt);
         EditText telefone_alt = findViewById(R.id.Numero_box_alt);
@@ -67,6 +71,8 @@ public class AlterarDadosActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(view ->{
             Intent intent = new Intent(AlterarDadosActivity.this, MenuUsuarioActivity.class);
+            intent.putExtra("emailUser",emailAntes);
+            intent.putExtra("telefoneUser",telefoneAntes);
             startActivity(intent);
         });
     }
