@@ -65,7 +65,7 @@ public class ConfirmTokenCadastroActivity extends AppCompatActivity {
         Button reenviarToken = findViewById(R.id.ReenviarCodigo_ADT);
 
         reenviarToken.setOnClickListener(view -> {
-            mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Altera/ReenviaToken");
+            publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Altera/ReenviaToken");
         });
 
 

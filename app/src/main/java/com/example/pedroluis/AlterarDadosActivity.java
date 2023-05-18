@@ -54,12 +54,13 @@ public class AlterarDadosActivity extends AppCompatActivity {
                         Toast.makeText(AlterarDadosActivity.this, "Insira um numero de telefone", Toast.LENGTH_SHORT).show();
                     if (!email.isEmpty() && !telefone.isEmpty()) {
                         // verificar se existe o login
-                        if (email.matches("^[a-zA-Z0-9.]+@(gmail\\.com|hotmail\\.com|yahoo\\.com\\.br)$")) {
+                        System.out.println(email);
+                        //if (email.matches("^[a-zA-Z0-9.]+@(gmail\\.com|hotmail\\.com|yahoo\\.com\\.br)$")) {
                             mqttHelper.publish(telefone, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/Telefone");
                             mqttHelper.publish(emailAntes, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/E-mail_Antes");
                             mqttHelper.publish(email, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/E-mail");
-                        } else
-                            Toast.makeText(AlterarDadosActivity.this, "Coloque um e-mail válido", Toast.LENGTH_SHORT).show();
+                        //} else
+                            //Toast.makeText(AlterarDadosActivity.this, "Coloque um e-mail válido", Toast.LENGTH_SHORT).show();
 
 
                     }

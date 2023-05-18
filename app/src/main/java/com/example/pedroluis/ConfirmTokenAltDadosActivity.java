@@ -21,6 +21,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.io.UnsupportedEncodingException;
+
 public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
 
     MqttHelper mqttHelper;
@@ -46,8 +48,8 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
         confirmToken.setOnClickListener(view -> {
             String tokenAux = token.getText().toString();
             if(!tokenAux.isEmpty()) {
-                if (tokenAux.matches("^[0-9]{7}$"))
-                    mqttHelper.publish(tokenAux, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/Token");
+                if (tokenAux.matches("^[0-9]{6}$"))
+                     publish(tokenAux, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/Token");
                 else
                     Toast.makeText(ConfirmTokenAltDadosActivity.this, "Token Inválido", Toast.LENGTH_SHORT).show();
             }else
@@ -125,15 +127,17 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
                     //subscribeToTopic();
                     try {
-                        mqttAndroidClient.subscribe("ParkHere/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
+                        mqttAndroidClient.subscribe("Smart_Farm+/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
+                                /*
                                 if(auxParaPublicarUmaVez) {
                                     //Publica no topico toda vez que se entra na página.
                                     mqttHelper.publish("1", "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/SendEmail");
                                     auxParaPublicarUmaVez = false;
                                 }
+                                 */
                             }
 
                             @Override
@@ -157,6 +161,18 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
 
         } catch (MqttException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    void publish(String payload, String topic) {
+        byte[] encodedPayload = new byte[0];
+        //teste de conexão
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            mqttAndroidClient.publish(topic, message);
+        } catch (UnsupportedEncodingException | MqttException e) {
+            e.printStackTrace();
         }
     }
 }
