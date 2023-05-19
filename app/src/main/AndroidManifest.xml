@@ -24,7 +24,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".MapaActivity"
             android:exported="false" />
         <activity
             android:name=".ConfirmTokenAltDadosActivity"
@@ -85,7 +85,7 @@
             android:name=".UsuarioActivity"
             android:exported="false"/>
         <activity
-            android:name=".MapaActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
