@@ -15,8 +15,16 @@
 
         >
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBMEx9b5FMCHCfNTsvOtz8FqBaXtkjug4s" />
+
         <activity
             android:name=".TrocaSenhaActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ConfirmTokenAltDadosActivity"
@@ -77,7 +85,7 @@
             android:name=".UsuarioActivity"
             android:exported="false"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".MapaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
