@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -32,24 +33,29 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
         Button fale_conosco_b = findViewById(R.id.button_assistencia_fale_conosco);
         Button voltar = findViewById(R.id.voltar);
 
-        fale_conosco.setOnClickListener(view ->{
-            AlertDialog.Builder comfirmaAssistencia = new AlertDialog.Builder(AssistenciaMenuActivity.this);
-            comfirmaAssistencia.setTitle("Desenvolvedor: Raul Moreno Pereira");
-            comfirmaAssistencia.setMessage("Estudante do Instituto Nacional de Telecomunicações (Inatel), do curso de Engenharia de Computação, atualmente" +
-                    "trabalha no desenvolvimento do aplicado AquaFarm, destinado a produtores rurais para otimizar suas produções." +
-                    "O projeto está sendo desenvolvido dentro do CS&I Lab");
-            comfirmaAssistencia.setCancelable(false);
-            comfirmaAssistencia.setPositiveButton("Pedir assistência", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int witch) {
-                    String url = "https://api.whatsapp.com/send?phone="+number;
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                }
-            });
-            comfirmaAssistencia.setPositiveButton("Cancelar",null);
-        });
+        fale_conosco.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder confirmaConversa = new AlertDialog.Builder(AssistenciaMenuActivity.this);
+                confirmaConversa.setTitle("Desenvolvedores: Raul Moreno Pereira e Vinícius de Souza Simões");
+                confirmaConversa.setMessage("Estudantes do Instituto Nacional de Telecomunicações (Inatel), do curso de Engenharia de Computação e Software, atualmente " +
+                        "trabalham no desenvolvimento do aplicado AquaFarm, destinado a produtores rurais para otimizar suas produções." +
+                        "O projeto está sendo desenvolvido dentro do CS&I Lab");
+                confirmaConversa.setCancelable(false);
+                confirmaConversa.setPositiveButton("Falar conosco", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        String url = "https://api.whatsapp.com/send?phone="+number;
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    }
+                });
+                confirmaConversa.setNegativeButton("Cancelar", null);
+                confirmaConversa.create().show();
+            }
+
+    });
 
         fale_conosco_b.setOnClickListener(view ->{
             String url = "https://api.whatsapp.com/send?phone="+number;

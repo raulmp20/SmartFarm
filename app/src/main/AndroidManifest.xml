@@ -68,7 +68,7 @@
             android:name=".AlterarDadosActivity"
             android:exported="false"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".AssistenciaMenuActivity"
             android:exported="false"/>
         <activity
             android:name=".CadastroEstufaActivity"
@@ -85,7 +85,7 @@
             android:name=".UsuarioActivity"
             android:exported="false"/>
         <activity
-            android:name=".AssistenciaMenuActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
