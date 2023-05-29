@@ -24,7 +24,7 @@ public class CadastroActivity extends AppCompatActivity {
     MqttHelper mqttHelper;
 
     String email_cadastro;
-
+    int oi;
     // Cria um objeto para gerenciamento de Sessão
     public static SharedPreferences sharedpreferences;
 
