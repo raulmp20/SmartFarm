@@ -34,11 +34,19 @@ public class FornecedoresActivity extends AppCompatActivity {
     String longi2;
     String nomeponto2;
     String nomeendereco2;
+
+    String telefoneUser;
+
+    String emailUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_find_products);
+
+        Bundle extras = getIntent().getExtras();
+        telefoneUser = extras.getString("telefoneU");
+        emailUser = extras.getString("emailU");
 
 
         Button voltar = findViewById(R.id.button_voltar_products);
@@ -85,6 +93,8 @@ public class FornecedoresActivity extends AppCompatActivity {
             Enviadados.putExtra("Longitude2", longi2);
             Enviadados.putExtra("ponto2", nomeponto2);
             Enviadados.putExtra("endereco2", nomeendereco2);
+            Enviadados.putExtra("emailUser", emailUser);
+            Enviadados.putExtra("telefoneUser", telefoneUser);
             startActivity(Enviadados);
         });
 
@@ -126,6 +136,8 @@ public class FornecedoresActivity extends AppCompatActivity {
             Enviadados.putExtra("Longitude2", longi2);
             Enviadados.putExtra("ponto2", nomeponto2);
             Enviadados.putExtra("endereco2", nomeendereco2);
+            Enviadados.putExtra("emailUser", emailUser);
+            Enviadados.putExtra("telefoneUser", telefoneUser);
             startActivity(Enviadados);
         });
 
@@ -167,6 +179,8 @@ public class FornecedoresActivity extends AppCompatActivity {
             Enviadados.putExtra("Longitude2", longi2);
             Enviadados.putExtra("ponto2", nomeponto2);
             Enviadados.putExtra("endereco2", nomeendereco2);
+            Enviadados.putExtra("emailUser", emailUser);
+            Enviadados.putExtra("telefoneUser", telefoneUser);
             startActivity(Enviadados);
         });
 
@@ -174,6 +188,8 @@ public class FornecedoresActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(view ->{
             Intent intent = new Intent(FornecedoresActivity.this, MenuUsuarioActivity.class);
+            intent.putExtra("emailUser", emailUser);
+            intent.putExtra("telefoneUser", telefoneUser);
             startActivity(intent);
         });
     }

@@ -89,6 +89,8 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         fornecedores.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent goFornecedor = new Intent(MenuUsuarioActivity.this,FornecedoresActivity.class);
+            goFornecedor.putExtra("telefoneU",telefoneUser);
+            goFornecedor.putExtra("emailU",emailUser);
             startActivity(goFornecedor);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -96,6 +98,8 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         fornecedores_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent goFornecedores = new Intent(MenuUsuarioActivity.this,FornecedoresActivity.class);
+            goFornecedores.putExtra("telefoneU",telefoneUser);
+            goFornecedores.putExtra("emailU",emailUser);
             startActivity(goFornecedores);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -103,16 +107,16 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         assistencia.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent goAssistencia = new Intent(MenuUsuarioActivity.this, AssistenciaMenuActivity.class);
+            goAssistencia.putExtra("telefoneUs",telefoneUser);
+            goAssistencia.putExtra("emailUs",emailUser);
             startActivity(goAssistencia);
-            // Exclui essa tela ao sair para não guardar as info que pus nela
-            onRestart();
         });
         assistencia_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent goAssistencias = new Intent(MenuUsuarioActivity.this,AssistenciaMenuActivity.class);
+            goAssistencias.putExtra("telefoneUs",telefoneUser);
+            goAssistencias.putExtra("emailUs",emailUser);
             startActivity(goAssistencias);
-            // Exclui essa tela ao sair para não guardar as info que pus nela
-            onRestart();
         });
 
         voltar.setOnClickListener(v-> {

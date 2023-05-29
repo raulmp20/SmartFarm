@@ -83,8 +83,7 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Mqtt", mqttMessage.toString());
-                // Exibindo na tela os retornos do Banco de Dados
+                Log.w("Debug", mqttMessage.toString());
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/AltDados/Status/Token")) {
                     switch (mqttMessage.toString()) {
                         case ("0"):

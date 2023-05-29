@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +20,9 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
 
     String number = "35988921894";
 
+    String telefoneUser;
+
+    String emailUser;
 
     @Override
     public void onBackPressed() {
@@ -28,6 +32,11 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assistencia_tecnica);
+
+        Bundle extras = getIntent().getExtras();
+
+        telefoneUser = extras.getString("telefoneUs");
+        emailUser = extras.getString("emailUs");
 
         ImageButton fale_conosco = findViewById(R.id.assistencia_fale_conosco);
         Button fale_conosco_b = findViewById(R.id.button_assistencia_fale_conosco);
@@ -81,8 +90,10 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
     });
 
         voltar.setOnClickListener(view ->{
-            Intent intent = new Intent(AssistenciaMenuActivity.this, MenuUsuarioActivity.class);
-            startActivity(intent);
+            Intent voltar_usuario = new Intent(AssistenciaMenuActivity.this, MenuUsuarioActivity.class);
+            voltar_usuario.putExtra("emailUser", emailUser);
+            voltar_usuario.putExtra("telefoneUser", telefoneUser);
+            startActivity(voltar_usuario);
         });
     }
 }

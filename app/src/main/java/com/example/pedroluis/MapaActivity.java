@@ -42,16 +42,24 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     double la1;
     double lo2;
     double la2;
+
+    String telefoneUser;
+    String emailUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle extras = getIntent().getExtras();
+        telefoneUser = extras.getString("telefoneUser");
+        emailUser = extras.getString("emailUser");
 
         setContentView(R.layout.activity_mapa);
 
         Button voltar = findViewById(R.id.button_voltar_mapa);
         voltar.setOnClickListener(v->{
             Intent intent = new Intent(MapaActivity.this, FornecedoresActivity.class);
+            intent.putExtra("emailU", emailUser);
+            intent.putExtra("telefoneU", telefoneUser);
             startActivity(intent);
         });
 
