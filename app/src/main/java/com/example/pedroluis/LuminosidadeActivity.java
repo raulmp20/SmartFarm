@@ -19,37 +19,38 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class LuminosidadeActivity extends AppCompatActivity {
-    //MqttHelper mqttHelper;
+    MqttHelper mqttHelper;
 
-    //boolean firstCheckLum = true;
+    boolean firstCheckLum = true;
 
     // Botão atualizar
     Button atualizar;
     Button voltar;
     Button graficos;
     // Text Views
-    //TextView mediaHora;
-    //TextView mediaDia;
-    //TextView valorInstantaneio;
-    //TextView modulo;
+    TextView mediaHora;
+    TextView mediaDia;
+    TextView valorInstantaneio;
+    TextView modulo;
+
     // Variáveis para controle de tempo
-    //long tempo;
-    //long tempoAntes = 0;
+    long tempo;
+    long tempoAntes = 0;
+
     // Adicinando uma informação inicial aos Text's View
-    //String info = "Em análise";
+    String info = "Em análise";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_luminosidade);
-        //startMqtt();
+        startMqtt();
 
         // Pegando os valores mais recentes do BD
-        /*if (firstCheckLum) {
-            publish("1", "Smart_Farm/Sensores/ph/Info");
-        }*/
+        if (firstCheckLum) {
+            mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Lumi/Info");
+        }
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_l);
@@ -57,15 +58,16 @@ public class LuminosidadeActivity extends AppCompatActivity {
         graficos = findViewById(R.id.GraficoMedias_Lumi);
 
         // Instanciando texts view
-//        mediaHora = findViewById(R.id.media_hora_valor_lumi);
-//        mediaDia = findViewById(R.id.media_dia_valor_lumi);
-//        valorInstantaneio = findViewById(R.id.ult_oco_valor_lumi);
-//        modulo = findViewById(R.id.valor_modulo_lumi);
-//        // Dando informações iniciais a eles
-//        mediaHora.setText(info);
-//        valorInstantaneio.setText(info);
-//        mediaDia.setText(info);
-//        modulo.setText(info);
+        mediaHora = findViewById(R.id.media_hora_valor_lumi);
+        mediaDia = findViewById(R.id.media_dia_valor_lumi);
+        valorInstantaneio = findViewById(R.id.ult_oco_valor_lumi);
+        modulo = findViewById(R.id.valor_modulo_lumi);
+
+        // Dando informações iniciais a eles
+        mediaHora.setText(info);
+        valorInstantaneio.setText(info);
+        mediaDia.setText(info);
+        modulo.setText(info);
 
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela menu
@@ -77,7 +79,7 @@ public class LuminosidadeActivity extends AppCompatActivity {
         });
     }
 
-    /*private void startMqtt() {
+    private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
@@ -95,16 +97,16 @@ public class LuminosidadeActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 if (firstCheckLum) {
-                    if (topic.equals("Smart_Farm/Sensores/luminosidade/valorInstantaneo"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/valorInstantaneo"))
                         valorInstantaneio.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/luminosidade/valorMedioUmaHora"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/valorMedioUmaHora"))
                         mediaHora.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/luminosidade/valorMedioUmDia"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/valorMedioUmDia"))
                         mediaDia.setText(mqttMessage.toString());
 
-                    if(topic.equals("Smart_Farm/Sensores/luminosidade/Status"))
+                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/Status"))
                         switch (mqttMessage.toString()){
                             case("1"):
                                 modulo.setText("Em funcionamento");
@@ -118,22 +120,22 @@ public class LuminosidadeActivity extends AppCompatActivity {
                     firstCheckLum = false;
                 }
                 atualizar.setOnClickListener(view -> {
-                    publish("1", "Smart_Farm/Sensores/luminosidade/Info");
+                    mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/Info");
                     Toast.makeText(LuminosidadeActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
                         if (tempo - tempoAntes >= 1000) {
                             tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/Sensores/luminosidade/valorInstantaneo"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/valorInstantaneo"))
                                 valorInstantaneio.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/luminosidade/valorMedioUmaHora"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/valorMedioUmaHora"))
                                 mediaHora.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/luminosidade/valorMedioUmDia"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/valorMedioUmDia"))
                                 mediaDia.setText(mqttMessage.toString());
 
-                            if(topic.equals("Smart_Farm/Sensores/luminosidade/Status"))
+                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/luminosidade/Status"))
                                 switch (mqttMessage.toString()){
                                     case("1"):
                                         modulo.setText("Em funcionamento");
@@ -155,16 +157,4 @@ public class LuminosidadeActivity extends AppCompatActivity {
         });
     }
 
-    //Bloco que envia comandos para o broker
-    void publish(String payload, String topic) {
-        byte[] encodedPayload = new byte[0];
-        //teste de conexão
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            mqttHelper.mqttAndroidClient.publish(topic, message);
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

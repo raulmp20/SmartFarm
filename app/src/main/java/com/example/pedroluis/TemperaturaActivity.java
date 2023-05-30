@@ -19,37 +19,39 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class TemperaturaActivity extends AppCompatActivity {
-    //MqttHelper mqttHelper;
+    MqttHelper mqttHelper;
 
-    //boolean firstCheckTemp = true;
+    boolean firstCheckTemp = true;
 
     // Botão atualizar
     Button atualizar;
     Button voltar;
     Button graficos;
+
     // Text Views
-    //TextView mediaHora;
-    //TextView mediaDia;
-    //TextView valorInstantaneo;
-    //TextView modulo;
+    TextView mediaHora;
+    TextView mediaDia;
+    TextView valorInstantaneo;
+    TextView modulo;
+
     // Variáveis para controle de tempo
-    //long tempo;
-    //long tempoAntes = 0;
+    long tempo;
+    long tempoAntes = 0;
+
     // Adicinando uma informação inicial aos Text's View
-    //String info = "Em análise";
+    String info = "Em análise";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_temperatura);
-        //startMqtt();
+        startMqtt();
 
         // Pegando os valores mais recentes do BD
-        /*if (firstCheckTemp) {
-            publish("1", "Smart_Farm/Sensores/ph/Info");
-        }*/
+        if (firstCheckTemp) {
+            mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temp/Info");
+        }
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_t);
@@ -57,15 +59,16 @@ public class TemperaturaActivity extends AppCompatActivity {
         graficos = findViewById(R.id.GraficoMedias_temp);
 
         // Instanciando texts view
-        /*mediaHora = findViewById(R.id.media_hora_valor_temp);
+        mediaHora = findViewById(R.id.media_hora_valor_temp);
         mediaDia = findViewById(R.id.media_dia_valor_temp);
         valorInstantaneo = findViewById(R.id.ult_oco_valor_temp);
         modulo = findViewById(R.id.valor_modulo_temp);
+
         // Dando informações iniciais a eles
         mediaHora.setText(info);
         valorInstantaneo.setText(info);
         mediaDia.setText(info);
-        modulo.setText(info);*/
+        modulo.setText(info);
 
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela menu
@@ -77,7 +80,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         });
     }
 
-    /*private void startMqtt() {
+    private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
@@ -95,16 +98,16 @@ public class TemperaturaActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 if (firstCheckTemp) {
-                    if (topic.equals("Smart_Farm/Sensores/temperatura/valorInstantaneo"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorInstantaneo"))
                         valorInstantaneo.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/temperatura/valorMedioUmaHora"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmaHora"))
                         mediaHora.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/temperatura/valorMedioUmDia"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmDia"))
                         mediaDia.setText(mqttMessage.toString());
 
-                    if(topic.equals("Smart_Farm/Sensores/temperatura/Status"))
+                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/Status"))
                         switch (mqttMessage.toString()){
                             case("1"):
                                 modulo.setText("Em funcionamento");
@@ -118,22 +121,22 @@ public class TemperaturaActivity extends AppCompatActivity {
                     firstCheckTemp = false;
                 }
                 atualizar.setOnClickListener(view -> {
-                    publish("1", "Smart_Farm/Sensores/temperatura/Info");
+                    mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/Info");
                     Toast.makeText(TemperaturaActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
                         if (tempo - tempoAntes >= 1000) {
                             tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/Sensores/temperatura/valorInstantaneo"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorInstantaneo"))
                                 valorInstantaneo.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/temperatura/valorMedioUmaHora"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmaHora"))
                                 mediaHora.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/temperatura/valorMedioUmDia"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmDia"))
                                 mediaDia.setText(mqttMessage.toString());
 
-                            if(topic.equals("Smart_Farm/Sensores/temperatura/Status"))
+                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/Status"))
                                 switch (mqttMessage.toString()){
                                     case("1"):
                                         modulo.setText("Em funcionamento");
@@ -154,17 +157,4 @@ public class TemperaturaActivity extends AppCompatActivity {
             }
         });
     }
-
-    //Bloco que envia comandos para o broker
-    void publish(String payload, String topic) {
-        byte[] encodedPayload = new byte[0];
-        //teste de conexão
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            mqttHelper.mqttAndroidClient.publish(topic, message);
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

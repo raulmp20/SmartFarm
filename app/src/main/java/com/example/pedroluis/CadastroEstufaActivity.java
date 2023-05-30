@@ -19,8 +19,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_cadastro_estufas);
 
         Button cadastrar = findViewById(R.id.button_salvar);

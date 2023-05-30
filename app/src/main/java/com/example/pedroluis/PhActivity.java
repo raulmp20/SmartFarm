@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -19,37 +20,39 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class PhActivity extends AppCompatActivity {
-    //MqttHelper mqttHelper;
+    MqttHelper mqttHelper;
+    private MqttAndroidClient mqttAndroidClient;
 
     boolean firstCheckPh = true;
 
-    // Botão atualizar
     Button atualizar;
     Button voltar;
     Button graficos;
     // Text Views
-    //TextView mediaHora;
-    //TextView mediaDia;
-    //TextView valorInstantaneo;
-    //TextView modulo;
+    TextView mediaHora;
+    TextView mediaDia;
+    TextView valorInstantaneo;
+    TextView modulo;
     // Variáveis para controle de tempo
-    //long tempo;
-    //long tempoAntes = 0;
+    long tempo;
+    long tempoAntes = 0;
+
     // Adicinando uma informação inicial aos Text's View
-    //String info = "Em análise";
+    String info = "Em análise";
+
+    String message = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_ph);
-        //startMqtt();
+        startMqtt();
 
         // Pegando os valores mais recentes do BD
-        /*if (firstCheckPh) {
-            publish("1", "Smart_Farm/Sensores/ph/Info");
-        }*/
+        if (firstCheckPh) {
+            mqttHelper.publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+        }
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_ph);
@@ -57,15 +60,16 @@ public class PhActivity extends AppCompatActivity {
         graficos = findViewById(R.id.GraficoMedias_pH);
 
         // Instanciando texts view
-        /*mediaHora = findViewById(R.id.media_hora_valor_ph);
+        mediaHora = findViewById(R.id.media_hora_valor_ph);
         mediaDia = findViewById(R.id.media_dia_valor_ph);
         valorInstantaneo = findViewById(R.id.ult_oco_valor_ph);
         modulo = findViewById(R.id.valor_modulo_ph);
+
         // Dando informações iniciais a eles
         mediaHora.setText(info);
         valorInstantaneo.setText(info);
         mediaDia.setText(info);
-        modulo.setText(info);*/
+        modulo.setText(info);
 
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela menu
@@ -77,7 +81,7 @@ public class PhActivity extends AppCompatActivity {
         });
     }
 
-    /*private void startMqtt() {
+    private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
@@ -95,16 +99,16 @@ public class PhActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 if (firstCheckPh) {
-                    if (topic.equals("Smart_Farm/Sensores/ph/valorInstantaneo"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"Sensores/ph/valorInstantaneo"))
                         valorInstantaneo.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/ph/valorMedioUmaHora"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"Sensores/ph/valorMedioUmaHora"))
                         mediaHora.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/ph/valorMedioUmDia"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"Sensores/ph/valorMedioUmDia"))
                         mediaDia.setText(mqttMessage.toString());
 
-                    if(topic.equals("Smart_Farm/Sensores/ph/Status"))
+                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"Sensores/ph/Status"))
                         switch (mqttMessage.toString()){
                             case("1"):
                                 modulo.setText("Em funcionamento");
@@ -118,22 +122,22 @@ public class PhActivity extends AppCompatActivity {
                     firstCheckPh = false;
                 }
                 atualizar.setOnClickListener(view -> {
-                    publish("1", "Smart_Farm/Sensores/ph/Info");
+                    mqttHelper.publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
                     Toast.makeText(PhActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
                         if (tempo - tempoAntes >= 1000) {
                             tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/Sensores/ph/valorInstantaneo"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorInstantaneo"))
                                 valorInstantaneo.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/ph/valorMedioUmaHora"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmaHora"))
                                 mediaHora.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/ph/valorMedioUmDia"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmDia"))
                                 mediaDia.setText(mqttMessage.toString());
 
-                            if(topic.equals("Smart_Farm/Sensores/ph/Status"))
+                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Status"))
                                 switch (mqttMessage.toString()){
                                     case("1"):
                                         modulo.setText("Em funcionamento");
@@ -155,16 +159,4 @@ public class PhActivity extends AppCompatActivity {
         });
     }
 
-    //Bloco que envia comandos para o broker
-    void publish(String payload, String topic) {
-        byte[] encodedPayload = new byte[0];
-        //teste de conexão
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            mqttHelper.mqttAndroidClient.publish(topic, message);
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

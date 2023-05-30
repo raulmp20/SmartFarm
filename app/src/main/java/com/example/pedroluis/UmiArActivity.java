@@ -19,37 +19,39 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class UmiArActivity extends AppCompatActivity {
-    //MqttHelper mqttHelper;
+    MqttHelper mqttHelper;
 
-    //boolean firstCheckUmiAr= true;
+    boolean firstCheckUmiAr= true;
 
     // Botão atualizar
     Button atualizar;
     Button voltar;
     Button graficos;
+
     // Text Views
-    //TextView mediaHora;
-    //TextView mediaDia;
-    //TextView valorInstantaneo;
-    //TextView modulo;
+    TextView mediaHora;
+    TextView mediaDia;
+    TextView valorInstantaneo;
+    TextView modulo;
+
     // Variáveis para controle de tempo
-    //long tempo;
-    //long tempoAntes = 0;
+    long tempo;
+    long tempoAntes = 0;
+
     // Adicinando uma informação inicial aos Text's View
-    //String info = "Em análise";
+    String info = "Em análise";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_umi_ar);
-        //startMqtt();
+        startMqtt();
 
         // Pegando os valores mais recentes do BD
-        /*if (firstCheckUmiAr) {
-            publish("1", "Smart_Farm/Sensores/ph/Info");
-        }*/
+        if (firstCheckUmiAr) {
+            mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+        }
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_umi_ar);
@@ -57,15 +59,16 @@ public class UmiArActivity extends AppCompatActivity {
         graficos = findViewById(R.id.GraficoMedias_umi_ar);
 
         // Instanciando texts view
-        /*mediaHora = findViewById(R.id.media_hora_valor_umi_ar);
+        mediaHora = findViewById(R.id.media_hora_valor_umi_ar);
         mediaDia = findViewById(R.id.media_dia_valor_umi_ar);
         valorInstantaneo = findViewById(R.id.ult_oco_valor_umi_ar);
         modulo = findViewById(R.id.valor_modulo_umi_ar);
+
         // Dando informações iniciais a eles
         mediaHora.setText(info);
         valorInstantaneo.setText(info);
         mediaDia.setText(info);
-        modulo.setText(info);*/
+        modulo.setText(info);
 
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela menu
@@ -77,7 +80,7 @@ public class UmiArActivity extends AppCompatActivity {
         });
     }
 
-    /*private void startMqtt() {
+    private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
@@ -95,16 +98,16 @@ public class UmiArActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 if (firstCheckUmiAr) {
-                    if (topic.equals("Smart_Farm/Sensores/umidadeAr/valorInstantaneo"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/valorInstantaneo"))
                         valorInstantaneo.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/umidadeAr/valorMedioUmaHora"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/valorMedioUmaHora"))
                         mediaHora.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/Sensores/umidadeAr/valorMedioUmDia"))
+                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/valorMedioUmDia"))
                         mediaDia.setText(mqttMessage.toString());
 
-                    if(topic.equals("Smart_Farm/Sensores/umidadeAr/Status"))
+                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/Status"))
                         switch (mqttMessage.toString()){
                             case("1"):
                                 modulo.setText("Em funcionamento");
@@ -118,22 +121,22 @@ public class UmiArActivity extends AppCompatActivity {
                     firstCheckUmiAr = false;
                 }
                 atualizar.setOnClickListener(view -> {
-                    publish("1", "Smart_Farm/Sensores/umidadeAr/Info");
+                    mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/Info");
                     Toast.makeText(UmiArActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
                         if (tempo - tempoAntes >= 1000) {
                             tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/Sensores/umidadeAr/valorInstantaneo"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/valorInstantaneo"))
                                 valorInstantaneo.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/umidadeAr/valorMedioUmaHora"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/valorMedioUmaHora"))
                                 mediaHora.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/Sensores/umidadeAr/valorMedioUmDia"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/valorMedioUmDia"))
                                 mediaDia.setText(mqttMessage.toString());
 
-                            if(topic.equals("Smart_Farm/Sensores/umidadeAr/Status"))
+                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeAr/Status"))
                                 switch (mqttMessage.toString()){
                                     case("1"):
                                         modulo.setText("Em funcionamento");
@@ -155,16 +158,4 @@ public class UmiArActivity extends AppCompatActivity {
         });
     }
 
-    //Bloco que envia comandos para o broker
-    void publish(String payload, String topic) {
-        byte[] encodedPayload = new byte[0];
-        //teste de conexão
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            mqttHelper.mqttAndroidClient.publish(topic, message);
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

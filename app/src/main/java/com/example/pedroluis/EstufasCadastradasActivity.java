@@ -29,8 +29,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_estufas_cadastradas);
 
         mqttHelper = new MqttHelper();
@@ -55,7 +54,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         });
 
         nova_estufa.setOnClickListener(view -> {
-            Intent novo = new Intent(EstufasCadastradasActivity.this, CadastroEstufaActivity.class);
+            Intent novo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
             startActivity(novo);
         });
 

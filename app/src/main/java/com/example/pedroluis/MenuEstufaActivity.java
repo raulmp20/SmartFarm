@@ -15,8 +15,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         //fazendo com o cód olhe para tela de menu
         setContentView(R.layout.activity_menu);
         // Representante dos botões do front-end para serem manipulados pelo back-end e enviados ao front-end
