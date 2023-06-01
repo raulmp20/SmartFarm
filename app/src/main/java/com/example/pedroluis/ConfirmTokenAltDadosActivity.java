@@ -25,7 +25,7 @@ import java.io.UnsupportedEncodingException;
 
 public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
 
-    MqttHelper mqttHelper;
+    MqttHelper mqttHelper = new MqttHelper();
 
     private MqttAndroidClient mqttAndroidClient;
     boolean auxParaPublicarUmaVez = true;
@@ -39,8 +39,12 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_dados_token);
 
-        mqttHelper = new MqttHelper();
-        JoaoMqtt();
+        try {
+            startMqtt();
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+        //JoaoMqtt();
 
         EditText token = findViewById(R.id.tokenCadastroo);
 
@@ -49,7 +53,12 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
             String tokenAux = token.getText().toString();
             if(!tokenAux.isEmpty()) {
                 if (tokenAux.matches("^[0-9]{6}$"))
-                     publish(tokenAux, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/Token");
+                    try {
+                        mqttHelper.publish(tokenAux, "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/Token");
+                    }catch (Exception e){
+                        Toast.makeText(this, "Erro: "+e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
                 else
                     Toast.makeText(ConfirmTokenAltDadosActivity.this, "Token Inválido", Toast.LENGTH_SHORT).show();
             }else
@@ -69,19 +78,20 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-    private void JoaoMqtt() {
-        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), mqttHelper.getServerUri(), mqttHelper.getClientId());
-        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
+
+    private void startMqtt() {
+        mqttHelper = new MqttHelper(getApplicationContext());
+        mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
-                Log.w("mqtt", s);
             }
-
             @Override
             public void connectionLost(Throwable throwable) {
+                //Aparece essa mensagem sempre que a conexão for perdida
+                //Toast.makeText(getApplicationContext(), "Conexão perdida", Toast.LENGTH_SHORT).show();
             }
-
             @Override
+            // messageArrived é uma função que é chamada toda vez que o cliente MQTT recebe uma mensagem
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/AltDados/Status/Token")) {
@@ -101,66 +111,8 @@ public class ConfirmTokenAltDadosActivity extends AppCompatActivity {
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
             }
-
         });
-        //connect();
-        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-        mqttConnectOptions.setAutomaticReconnect(true);
-        mqttConnectOptions.setCleanSession(false);
-        mqttConnectOptions.setUserName(mqttHelper.getUsername());
-        mqttConnectOptions.setPassword(mqttHelper.getPassword().toCharArray());
-
-        try {
-
-            mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-
-                    DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
-                    disconnectedBufferOptions.setBufferEnabled(true);
-                    disconnectedBufferOptions.setBufferSize(100);
-                    disconnectedBufferOptions.setPersistBuffer(false);
-                    disconnectedBufferOptions.setDeleteOldestMessages(false);
-                    mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
-                    //subscribeToTopic();
-                    try {
-                        mqttAndroidClient.subscribe("Smart_Farm+/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
-                            @Override
-                            public void onSuccess(IMqttToken asyncActionToken) {
-                                Log.w("Mqtt", "Subscribed!");
-                                /*
-                                if(auxParaPublicarUmaVez) {
-                                    //Publica no topico toda vez que se entra na página.
-                                    mqttHelper.publish("1", "Smart_Farm/" + mqttHelper.getClientId() + "/AltDados/SendEmail");
-                                    auxParaPublicarUmaVez = false;
-                                }
-                                 */
-                            }
-
-                            @Override
-                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                                Log.w("Mqtt", "Subscribed fail!");
-                            }
-                        });
-
-                    } catch (MqttException ex) {
-                        System.err.println("Exceptionst subscribing");
-                        ex.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.w("Mqtt", "Failed to connect to: " + mqttHelper.getServerUri() + exception.toString());
-                }
-            });
-
-
-        } catch (MqttException ex) {
-            ex.printStackTrace();
-        }
     }
 
     void publish(String payload, String topic) {

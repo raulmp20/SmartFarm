@@ -1,6 +1,7 @@
 package com.example.pedroluis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -30,13 +33,15 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_config_estufa);
-        //startMqtt();
+        startMqtt();
         // Pegando as informações das caixas texto
-        //EditText novo_nome_att;
-        //novo_nome_att = findViewById(R.id.estufa_novo_nome);
+        EditText novo_nome_att;
+        novo_nome_att = findViewById(R.id.estufa_novo_nome);
+
+        SwitchCompat botaoSwitch;
+        botaoSwitch = findViewById(R.id.switch2);
         Button troca_senha;
         troca_senha = findViewById(R.id.TrocaSenha_conta);
         // Botão "salvar"
@@ -48,32 +53,28 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
         // Atualizando os dados
         salvar.setOnClickListener(v -> {
-            /*
+
             // Pegando as informações dos EditText e adicionando a uma string
-            String senhaNova = senha_att.getText().toString();
-            String confirmSenhaNova = confirm_senha_att.getText().toString();
-            String email = email_att.getText().toString();
-            String pin = pin_att.getText().toString();
+            String nomeNovo = novo_nome_att.getText().toString();
+
             // Verificando se a senha é igual a senha confirmada
-            if (senhaNova.equals(confirmSenhaNova) && !confirmSenhaNova.isEmpty()) {
-                publish(email, "Smart_Farm/Atualiza/Email");
-                publish(senhaNova, "Smart_Farm/Atualiza/Senha");
-                publish(pin, "Smart_Farm/Atualiza/Token");
-            } else if (!senhaNova.equals(confirmSenhaNova)) {
-                Toast.makeText(ConfigEstufaActivity.this, "As senhas não se coincidem", Toast.LENGTH_SHORT).show();
+            if (!nomeNovo.isEmpty()) {
+                mqttHelper.publish(nomeNovo, "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Nome");
+            } else {
+                Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
             }
-            if(senhaNova.isEmpty()) {
-                Toast.makeText(ConfigEstufaActivity.this, "Insira uma senha", Toast.LENGTH_SHORT).show();
-            }
-            if(confirmSenhaNova.isEmpty()) {
-                Toast.makeText(ConfigEstufaActivity.this, "Insira uma confirmação de senha", Toast.LENGTH_SHORT).show();
-            }
-            if (email.isEmpty()) {
-                Toast.makeText(ConfigEstufaActivity.this, "Insira um e-mail", Toast.LENGTH_SHORT).show();
-            }
-             */
-            Intent save = new Intent(ConfigEstufaActivity.this, MenuEstufaActivity.class);
-            startActivity(save);
+
+            botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b){
+                        mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                    }else{
+                        mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                    }
+                }
+            });
+
         });
         // Voltando ao menu
         voltar.setOnClickListener(v -> {
@@ -89,7 +90,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         });
     }
 
-    /*private void startMqtt() {
+    private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
@@ -107,19 +108,19 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             // messageArrived é uma função que é chamada toda vez que o cliente MQTT recebe uma mensagem
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
-                if (topic.equals("Smart_Farm/Atualiza/Status")) {
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Status")) {
                     switch (mqttMessage.toString()) {
                         // TROCAR: 00 -> E-mail não encontrado, 01 -> Pin inválido, 11 -> Senha atualizada
                         case ("00"):
-                            Toast.makeText(ConfigEstufaActivity.this, "E-mail não encontrado", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ConfigEstufaActivity.this, "Falha ao atualizar", Toast.LENGTH_SHORT).show();
                             break;
                         case ("10"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Pin inválido", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ConfigEstufaActivity.this, "Nome já existe", Toast.LENGTH_SHORT).show();
                             break;
                         case ("11"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Senha atualizada", Toast.LENGTH_SHORT).show();
-                            Intent SenhaTrocada = new Intent(ConfigEstufaActivity.this, LoginActivity.class);
-                            startActivity(SenhaTrocada);
+                            Toast.makeText(ConfigEstufaActivity.this, "Nome atualizado", Toast.LENGTH_SHORT).show();
+                            Intent saveNome = new Intent(ConfigEstufaActivity.this, MenuEstufaActivity.class);
+                            startActivity(saveNome);
                             break;
                         default:
                             break;
@@ -145,15 +146,5 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     }
 
     //Bloco que envia comandos para o broker
-    void publish(String payload, String topic) {
-        byte[] encodedPayload = new byte[0];
-        //teste de conexão
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            mqttHelper.mqttAndroidClient.publish(topic, message);
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-        }
-    }*/
+
 }
