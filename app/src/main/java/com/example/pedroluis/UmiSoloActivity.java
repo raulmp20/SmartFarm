@@ -1,6 +1,7 @@
 package com.example.pedroluis;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,39 +25,38 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class UmiSoloActivity extends AppCompatActivity {
-    MqttHelper mqttHelper;
-
+    MqttHelper mqttHelper = new MqttHelper();
     private MqttAndroidClient mqttAndroidClient;
     private Boolean auxParaPublicarUmaVez = true;
-    String message = "1";
 
-    boolean firstCheckUmiSolo= true;
-
-    // Botão atualizar
     Button atualizar;
     Button voltar;
     Button graficos;
-
     // Text Views
     TextView mediaHora;
     TextView mediaDia;
     TextView valorInstantaneo;
+    String val_inst;
     TextView modulo;
-
     // Variáveis para controle de tempo
     long tempo;
     long tempoAntes = 0;
 
+
+
+
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
 
+    String message = "1";
+
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_umi_solo);
-        JoaoMqtt();
 
+        JoaoMqtt();
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_umi_solo);
@@ -101,46 +101,46 @@ public class UmiSoloActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-                if (firstCheckUmiSolo) {
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/valorInstantaneo"))
-                        valorInstantaneo.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/valorMedioUmaHora"))
-                        mediaHora.setText(mqttMessage.toString());
-
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/valorMedioUmDia"))
-                        mediaDia.setText(mqttMessage.toString());
-
-                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/Status"))
-                        switch (mqttMessage.toString()){
-                            case("1"):
-                                modulo.setText("Em funcionamento");
-                                break;
-                            case("0"):
-                                modulo.setText("Não está funcionando");
-                                break;
-                            default:
-                                break;
-                        }
-                    firstCheckUmiSolo = false;
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/ValorInstantaneo")) {
+                    val_inst = mqttMessage.toString();
+                    valorInstantaneo.setText(val_inst);
                 }
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmaHora"))
+                    mediaHora.setText(mqttMessage.toString());
+
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmDia"))
+                    mediaDia.setText(mqttMessage.toString());
+
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Status"))
+                    switch (mqttMessage.toString()){
+                        case("1"):
+                            modulo.setText("Em funcionamento");
+                            break;
+                        case("0"):
+                            modulo.setText("Não está funcionando");
+                            break;
+                        default:
+                            break;
+                    }
+
                 atualizar.setOnClickListener(view -> {
-                    mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/Info");
+                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
                     Toast.makeText(UmiSoloActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
                         if (tempo - tempoAntes >= 1000) {
                             tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/valorInstantaneo"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorInstantaneo"))
                                 valorInstantaneo.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/valorMedioUmaHora"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmaHora"))
                                 mediaHora.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/valorMedioUmDia"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmDia"))
                                 mediaDia.setText(mqttMessage.toString());
 
-                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/umidadeSolo/Status"))
+                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Status"))
                                 switch (mqttMessage.toString()){
                                     case("1"):
                                         modulo.setText("Em funcionamento");
@@ -155,7 +155,6 @@ public class UmiSoloActivity extends AppCompatActivity {
                         }
                     }
                 });
-
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {

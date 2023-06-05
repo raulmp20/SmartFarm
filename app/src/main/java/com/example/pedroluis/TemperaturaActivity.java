@@ -3,6 +3,7 @@ package com.example.pedroluis;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,37 +25,37 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class TemperaturaActivity extends AppCompatActivity {
-    MqttHelper mqttHelper;
-
+    MqttHelper mqttHelper = new MqttHelper();
     private MqttAndroidClient mqttAndroidClient;
     private Boolean auxParaPublicarUmaVez = true;
 
-    String message = "1";
-    boolean firstCheckTemp = true;
-
-    // Botão atualizar
     Button atualizar;
     Button voltar;
     Button graficos;
-
     // Text Views
     TextView mediaHora;
     TextView mediaDia;
     TextView valorInstantaneo;
+    String val_inst;
     TextView modulo;
-
     // Variáveis para controle de tempo
     long tempo;
     long tempoAntes = 0;
 
+
+
+
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
 
+    String message = "1";
+
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_temperatura);
+
         JoaoMqtt();
 
         // Instanciando os botões
@@ -100,46 +101,46 @@ public class TemperaturaActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-                if (firstCheckTemp) {
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorInstantaneo"))
-                        valorInstantaneo.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmaHora"))
-                        mediaHora.setText(mqttMessage.toString());
-
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmDia"))
-                        mediaDia.setText(mqttMessage.toString());
-
-                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/Status"))
-                        switch (mqttMessage.toString()){
-                            case("1"):
-                                modulo.setText("Em funcionamento");
-                                break;
-                            case("0"):
-                                modulo.setText("Não está funcionando");
-                                break;
-                            default:
-                                break;
-                        }
-                    firstCheckTemp = false;
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/ValorInstantaneo")) {
+                    val_inst = mqttMessage.toString();
+                    valorInstantaneo.setText(val_inst);
                 }
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorMedioUmaHora"))
+                    mediaHora.setText(mqttMessage.toString());
+
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorMedioUmDia"))
+                    mediaDia.setText(mqttMessage.toString());
+
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/Status"))
+                    switch (mqttMessage.toString()){
+                        case("1"):
+                            modulo.setText("Em funcionamento");
+                            break;
+                        case("0"):
+                            modulo.setText("Não está funcionando");
+                            break;
+                        default:
+                            break;
+                    }
+
                 atualizar.setOnClickListener(view -> {
-                    mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/Info");
+                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/Info");
                     Toast.makeText(TemperaturaActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
                         if (tempo - tempoAntes >= 1000) {
                             tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorInstantaneo"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorInstantaneo"))
                                 valorInstantaneo.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmaHora"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorMedioUmaHora"))
                                 mediaHora.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/valorMedioUmDia"))
+                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorMedioUmDia"))
                                 mediaDia.setText(mqttMessage.toString());
 
-                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/temperatura/Status"))
+                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/Status"))
                                 switch (mqttMessage.toString()){
                                     case("1"):
                                         modulo.setText("Em funcionamento");
@@ -187,7 +188,7 @@ public class TemperaturaActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temp/Info");
+                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/Info");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }
@@ -226,4 +227,5 @@ public class TemperaturaActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }

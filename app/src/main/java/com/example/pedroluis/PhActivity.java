@@ -37,6 +37,7 @@ public class PhActivity extends AppCompatActivity {
     TextView mediaHora;
     TextView mediaDia;
     TextView valorInstantaneo;
+    String val_inst;
     TextView modulo;
     // Variáveis para controle de tempo
     long tempo;
@@ -101,18 +102,19 @@ public class PhActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-                if (firstCheckPh) {
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorInstantaneo"))
-                        valorInstantaneo.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmaHora"))
-                        mediaHora.setText(mqttMessage.toString());
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/ValorInstantaneo")) {
+                    val_inst = mqttMessage.toString();
+                    valorInstantaneo.setText(val_inst);
+                }
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmaHora"))
+                    mediaHora.setText(mqttMessage.toString());
 
-                    if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmDia"))
-                        mediaDia.setText(mqttMessage.toString());
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmDia"))
+                    mediaDia.setText(mqttMessage.toString());
 
-                    if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Status"))
-                        switch (mqttMessage.toString()){
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Status"))
+                    switch (mqttMessage.toString()){
                             case("1"):
                                 modulo.setText("Em funcionamento");
                                 break;
@@ -122,10 +124,9 @@ public class PhActivity extends AppCompatActivity {
                             default:
                                 break;
                         }
-                    firstCheckPh = false;
-                }
+
                 atualizar.setOnClickListener(view -> {
-                    mqttHelper.publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
                     Toast.makeText(PhActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
