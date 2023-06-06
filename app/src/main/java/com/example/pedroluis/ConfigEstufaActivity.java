@@ -8,11 +8,15 @@ import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -23,6 +27,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 public class ConfigEstufaActivity extends AppCompatActivity {
     // Pra consultar o banco de dados
@@ -30,12 +35,20 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     // Acessar o banco de dados, var. aux. para banco de dados
     MqttHelper mqttHelper;
 
+    String emailAntes;
+    String telefoneAntes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_config_estufa);
         startMqtt();
+
+        Bundle extras = getIntent().getExtras();
+        emailAntes = extras.getString("emailA");
+        telefoneAntes = extras.getString("telefoneA");
+
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
         novo_nome_att = findViewById(R.id.estufa_novo_nome);
@@ -50,6 +63,31 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         // Botão "voltar"
         Button voltar;
         voltar = findViewById(R.id.button_voltar_config);
+
+        Spinner spinner = findViewById(R.id.plants_spinner);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String item = adapterView.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("Alface");
+        arrayList.add("Couve");
+        arrayList.add("Morango");
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
+
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinner.setAdapter(adapter);
 
         // Atualizando os dados
         salvar.setOnClickListener(v -> {
@@ -80,6 +118,8 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         voltar.setOnClickListener(v -> {
             // Mudando a tela para a tela menu
             Intent mudar = new Intent(ConfigEstufaActivity.this, MenuEstufaActivity.class);
+            mudar.putExtra("emailA",emailAntes);
+            mudar.putExtra("telefoneA",telefoneAntes);
             startActivity(mudar);
         });
 

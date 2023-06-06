@@ -12,12 +12,20 @@ public class MenuEstufaActivity extends AppCompatActivity {
     String firstCheckMain = "Tgg";
     // Passando esse parâmrtro para as próximas telas
 
+    String emailAntes;
+    String telefoneAntes;
+
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //fazendo com o cód olhe para tela de menu
         setContentView(R.layout.activity_menu);
+
+        Bundle extras = getIntent().getExtras();
+        emailAntes = extras.getString("emailA");
+        telefoneAntes = extras.getString("telefoneA");
+
         // Representante dos botões do front-end para serem manipulados pelo back-end e enviados ao front-end
         Button config;
 
@@ -66,11 +74,15 @@ public class MenuEstufaActivity extends AppCompatActivity {
         config.setOnClickListener(v-> {
             // mudando para tela de config
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
         });
         config_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -78,6 +90,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         PH.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,PhActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -85,6 +99,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         image_ph.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,PhActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -92,6 +108,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         umi_ar.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,UmiArActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -99,6 +117,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         umi_ar_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,UmiArActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -106,6 +126,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         temp.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this, TemperaturaActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -113,6 +135,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         temp_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,TemperaturaActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -121,6 +145,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         umi_substrato.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this, UmiSoloActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -128,6 +154,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         umi_substrato_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,UmiSoloActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -136,6 +164,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         lumi.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this, LuminosidadeActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -143,6 +173,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         lumi_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this, LuminosidadeActivity.class);
+            mudar.putExtra("emailA", emailAntes);
+            mudar.putExtra("telefoneA", telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -151,6 +183,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         sair.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,MenuUsuarioActivity.class);
+            mudar.putExtra("emailUser",emailAntes);
+            mudar.putExtra("telefoneUser",telefoneAntes);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();

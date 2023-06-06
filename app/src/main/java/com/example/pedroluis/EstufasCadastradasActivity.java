@@ -23,6 +23,8 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
     boolean auxParaPublicarUmaVez = true;
 
     private ListView listView;
+    String telefoneUser;
+    String emailUser;
     private List<String> IdSolicitationList;
     private ArrayAdapter<String> adapter;
 
@@ -35,6 +37,10 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         mqttHelper = new MqttHelper();
 
         IdSolicitationList = new ArrayList<>();
+
+        Bundle extras = getIntent().getExtras();
+        telefoneUser = extras.getString("telefoneU");
+        emailUser = extras.getString("emailU");
 
 
         listView = findViewById(R.id.lista_estufas);
@@ -55,11 +61,15 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
 
         nova_estufa.setOnClickListener(view -> {
             Intent novo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
+            novo.putExtra("emailA", emailUser);
+            novo.putExtra("telefoneA", telefoneUser);
             startActivity(novo);
         });
 
         voltar.setOnClickListener(view -> {
             Intent back = new Intent(EstufasCadastradasActivity.this, MenuUsuarioActivity.class);
+            back.putExtra("emailUser", emailUser);
+            back.putExtra("telefoneUser", telefoneUser);
             startActivity(back);
         });
     }

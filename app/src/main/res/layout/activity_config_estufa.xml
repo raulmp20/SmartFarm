@@ -61,7 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:switchMinWidth="56dp"
-        app:layout_constraintHorizontal_bias="0.31"
         android:layout_marginTop="60dp"
         android:text="LIGAR NOTIFICAÇÕES: "
         android:textColor="@color/White"
@@ -78,10 +77,8 @@
         android:layout_width="120dp"
         android:layout_height="30dp"
         android:layout_marginTop="60dp"
-        android:text="PRODUÇÃO"
         android:background="@drawable/button_contorno"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switch2" />
 

@@ -74,7 +74,9 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         });
         estufas.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
-            Intent goEstufa = new Intent(MenuUsuarioActivity.this,MenuEstufaActivity.class);
+            Intent goEstufa = new Intent(MenuUsuarioActivity.this,EstufasCadastradasActivity.class);
+            goEstufa.putExtra("telefoneU",telefoneUser);
+            goEstufa.putExtra("emailU",emailUser);
             startActivity(goEstufa);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -82,6 +84,8 @@ public class MenuUsuarioActivity extends AppCompatActivity {
         estufas_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent goEstufas = new Intent(MenuUsuarioActivity.this,EstufasCadastradasActivity.class);
+            goEstufas.putExtra("telefoneU",telefoneUser);
+            goEstufas.putExtra("emailU",emailUser);
             startActivity(goEstufas);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
