@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -55,8 +56,6 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
         SwitchCompat botaoSwitch;
         botaoSwitch = findViewById(R.id.switch2);
-        Button troca_senha;
-        troca_senha = findViewById(R.id.TrocaSenha_conta);
         // Botão "salvar"
         Button salvar;
         salvar = findViewById(R.id.button_salvar_config);
@@ -106,9 +105,11 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(b){
-                        mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                        Toast.makeText(ConfigEstufaActivity.this, "ON", Toast.LENGTH_SHORT).show();
+                        //mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
                     }else{
-                        mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                        Toast.makeText(ConfigEstufaActivity.this, "OFF", Toast.LENGTH_SHORT).show();
+                        //mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
                     }
                 }
             });
@@ -120,12 +121,6 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             Intent mudar = new Intent(ConfigEstufaActivity.this, MenuEstufaActivity.class);
             mudar.putExtra("emailA",emailAntes);
             mudar.putExtra("telefoneA",telefoneAntes);
-            startActivity(mudar);
-        });
-
-        troca_senha.setOnClickListener(v -> {
-            // Mudando a tela para a tela menu
-            Intent mudar = new Intent(ConfigEstufaActivity.this, TrocaSenhaActivity.class);
             startActivity(mudar);
         });
     }

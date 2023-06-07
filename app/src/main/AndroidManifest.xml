@@ -85,6 +85,9 @@
             android:name=".UsuarioActivity"
             android:exported="false"/>
         <activity
+            android:name=".QRCodeScannerActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

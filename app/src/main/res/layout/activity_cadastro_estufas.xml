@@ -39,7 +39,7 @@
         android:background="@drawable/button_contorno"
         android:layout_width="310dp"
         android:layout_height="48dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:hint="NOME DA ESTUFA"
         android:imeOptions="actionSend"
         android:textColorHint="@color/White"
@@ -48,62 +48,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Tittle_estufas" />
 
+
+
     <Spinner
-        android:id="@+id/plants_spinner"
+        android:id="@+id/plantsConfig_spinner"
         android:layout_width="120dp"
         android:layout_height="30dp"
-        android:layout_marginTop="60dp"
-        android:text="PRODUÇÃO"
+        android:layout_marginTop="30dp"
         android:background="@drawable/button_contorno"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/estufa_nome" />
+        app:layout_constraintTop_toBottomOf="@id/estufa_nome"
+        />
 
     <TextView
         android:id="@+id/ligar_notificacoes"
-        android:layout_width="330dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
         android:text="LIGAR NOTIFICAÇÕES?"
         android:textColor="@color/White"
         android:textSize="20dp"
-        app:layout_constraintHorizontal_bias="0.63"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.292"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/plants_spinner" />
+        app:layout_constraintTop_toBottomOf="@id/plantsConfig_spinner" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:switchMinWidth="56dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:checked="true"
+        android:switchMinWidth="56dp"
         android:textOff="OFF"
         android:textOn="ON"
-        app:layout_constraintHorizontal_bias="0.135"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toEndOf="@id/ligar_notificacoes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ligar_notificacoes"/>
+        app:layout_constraintTop_toBottomOf="@id/plantsConfig_spinner" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_voltar"
         style="@style/ButtonEsq1"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="60dp"
         android:text="VOLTAR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_salvar"
+        android:id="@+id/button_escanear"
         style="@style/ButtonDir1"
-        android:layout_marginBottom="40dp"
-        android:text="SALVAR"
+        android:layout_marginBottom="60dp"
+        android:text="ESCANEAR"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="251dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
