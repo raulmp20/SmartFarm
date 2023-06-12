@@ -79,6 +79,9 @@
         <activity
             android:name=".FornecedoresActivity"
             android:exported="false"/>
+        <activity
+            android:name=".GraficoPhActivity"
+            android:exported="false"/>
         <activity android:name=".UmiSoloActivity"
             android:exported="false"/>
         <activity

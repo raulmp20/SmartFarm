@@ -91,7 +91,8 @@ public class PhActivity extends AppCompatActivity {
             startActivity(mudar);
         });
         graficos.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), "Menu de gráficos com as médias de pH", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(PhActivity.this, GraficoPhActivity.class);
+            startActivity(intent);
         });
     }
 
