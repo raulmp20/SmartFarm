@@ -46,9 +46,9 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_config_estufa);
         startMqtt();
 
-        Bundle extras = getIntent().getExtras();
-        emailAntes = extras.getString("emailA");
-        telefoneAntes = extras.getString("telefoneA");
+        //Bundle extras = getIntent().getExtras();
+        //emailAntes = extras.getString("emailA");
+        //telefoneAntes = extras.getString("telefoneA");
 
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
@@ -67,8 +67,8 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String item = adapterView.getItemAtPosition(position).toString();
+            public void onItemSelected(AdapterView<?> adapterView1, View view, int position, long l) {
+                String item = adapterView1.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -78,15 +78,15 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         });
 
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Alface");
-        arrayList.add("Couve");
-        arrayList.add("Morango");
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
+        ArrayList<String> arrayList1 = new ArrayList<>();
+        arrayList1.add("Alface");
+        arrayList1.add("Couve");
+        arrayList1.add("Morango");
+        ArrayAdapter<String> adapter1 =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList1);
 
-        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spinner.setAdapter(adapter);
+        adapter1.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinner.setAdapter(adapter1);
 
         // Atualizando os dados
         salvar.setOnClickListener(v -> {

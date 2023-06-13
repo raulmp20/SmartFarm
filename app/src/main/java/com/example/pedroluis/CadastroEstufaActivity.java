@@ -48,12 +48,12 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
         //LOGICA PARA SPINNER
         //final String[] item_spinner = new String[1];
-        Spinner spinner = findViewById(R.id.plantsConfig_spinner);
+        Spinner spinner = findViewById(R.id.plantsCadastro_spinner);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String item = adapterView.getItemAtPosition(position).toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position1, long l1) {
+                String item = adapterView.getItemAtPosition(position1).toString();
             }
 
             @Override
@@ -67,11 +67,11 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         arrayList.add("Alface");
         arrayList.add("Couve");
         arrayList.add("Morango");
-        ArrayAdapter<String> adapter =
+        ArrayAdapter<String> adapter1 =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
 
-        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spinner.setAdapter(adapter);
+        adapter1.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinner.setAdapter(adapter1);
 
         EditText nome_estufa = findViewById(R.id.estufa_nome);
 
