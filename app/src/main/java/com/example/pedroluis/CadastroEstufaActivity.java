@@ -1,7 +1,10 @@
 package com.example.pedroluis;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -9,17 +12,20 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class CadastroEstufaActivity extends AppCompatActivity {
@@ -31,9 +37,10 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     }
 
 
+    SwitchCompat botaoSwitch1;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_estufas);
 
@@ -45,59 +52,70 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         }catch (Exception e){
             System.out.println(e);
         }*/
+        /*Spinner spinner1 = findViewById(R.id.plantsCadastro_spinner);;
 
-        //LOGICA PARA SPINNER
-        //final String[] item_spinner = new String[1];
-        Spinner spinner = findViewById(R.id.plantsCadastro_spinner);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position1, long l1) {
-                String item = adapterView.getItemAtPosition(position1).toString();
+            public void onItemSelected(AdapterView<?> adapterView1, View view1, int position1, long l1) {
+                String item1 = adapterView1.getItemAtPosition(position1).toString();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> adapterView1) {
 
             }
         });
 
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Alface");
-        arrayList.add("Couve");
-        arrayList.add("Morango");
+        ArrayList<String> arrayList1 = new ArrayList<>();
+        arrayList1.add("product1");
+        arrayList1.add("product2");
+        arrayList1.add("product3");
         ArrayAdapter<String> adapter1 =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList1);
 
         adapter1.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spinner.setAdapter(adapter1);
+        spinner1.setAdapter(adapter1);*/
 
         EditText nome_estufa = findViewById(R.id.estufa_nome);
 
+        botaoSwitch1 = findViewById(R.id.switch1);
         setContentView(R.layout.activity_cadastro_estufas);
         Button escanear = findViewById(R.id.button_escanear);
+        SharedPreferences sharedPreferences = getSharedPreferences("studio.harpreet.sampleproject", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        botaoSwitch1.setChecked(sharedPreferences.getBoolean("switch", true));
 
 
-        escanear.setOnClickListener(view -> {
+        escanear.setOnClickListener(new View.OnClickListener() {
             String estufa = nome_estufa.getText().toString();
-            if(estufa.isEmpty())
-                Toast.makeText(CadastroEstufaActivity.this, "PREENCHA TODOS OS DADOS PARA CONTINUAR", Toast.LENGTH_SHORT).show();
-            else {
+
+            public void onClick (View view){
+                if (botaoSwitch1.isChecked()) {
+                    editor.putBoolean("switch", true);
+                    editor.apply();
+                    Toast.makeText(CadastroEstufaActivity.this, "1", Toast.LENGTH_SHORT).show();
+                }
+                if (!botaoSwitch1.isChecked()) {
+                    editor.putBoolean("switch", false);
+                    editor.apply();
+                    Toast.makeText(CadastroEstufaActivity.this, "0", Toast.LENGTH_SHORT).show();
+                }
+                editor.commit();
                 Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
-                //intent.putExtra("itemSelecionado", item_spinner[0]);
-                intent.putExtra("nomeEstufa", estufa);
-                startActivity(intent);
-            }
-        });
+                Toast.makeText(CadastroEstufaActivity.this, "Configurações salvas", Toast.LENGTH_SHORT).show();
+                //intent.putExtra("nomeEstufa", estufa);
+                // startActivity(intent);
 
-        Button voltar = findViewById(R.id.button_voltar);
+            }});
 
-        voltar.setOnClickListener(view ->{
-            Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
-            startActivity(intent);
-        });
-    }
+                    Button voltar = findViewById(R.id.button_voltar);
+
+                    voltar.setOnClickListener(view -> {
+                        Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
+                        startActivity(intent);
+                    });
+                }
 
     /*private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
@@ -157,4 +175,4 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             }
         });
     }*/
-}
+    }

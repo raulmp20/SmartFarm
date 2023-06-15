@@ -63,12 +63,12 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         Button voltar;
         voltar = findViewById(R.id.button_voltar_config);
 
-        Spinner spinner = findViewById(R.id.plants_spinner);
+        /*Spinner spinner = findViewById(R.id.plants_spinner);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView1, View view, int position, long l) {
-                String item = adapterView1.getItemAtPosition(position).toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String item = adapterView.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -78,15 +78,30 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         });
 
 
-        ArrayList<String> arrayList1 = new ArrayList<>();
-        arrayList1.add("Alface");
-        arrayList1.add("Couve");
-        arrayList1.add("Morango");
-        ArrayAdapter<String> adapter1 =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList1);
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("product1");
+        arrayList.add("product2");
+        arrayList.add("product3");
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
 
-        adapter1.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spinner.setAdapter(adapter1);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinner.setAdapter(adapter);*/
+        boolean notifica = true;
+        botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean notifica) {
+                if(notifica){
+                    Toast.makeText(ConfigEstufaActivity.this, "ON", Toast.LENGTH_SHORT).show();
+                    notifica = true;
+                    //mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                }else{
+                    notifica = false;
+                    Toast.makeText(ConfigEstufaActivity.this, "OFF", Toast.LENGTH_SHORT).show();
+                    //mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                }
+            }
+        });
 
         // Atualizando os dados
         salvar.setOnClickListener(v -> {
@@ -95,24 +110,13 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             String nomeNovo = novo_nome_att.getText().toString();
 
             // Verificando se a senha é igual a senha confirmada
-            if (!nomeNovo.isEmpty()) {
+            /*if (!nomeNovo.isEmpty()) {
                 mqttHelper.publish(nomeNovo, "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Nome");
             } else {
                 Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
-            }
+            }*/
+            //Toast.makeText(ConfigEstufaActivity.this, notifica, Toast.LENGTH_SHORT).show();
 
-            botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b){
-                        Toast.makeText(ConfigEstufaActivity.this, "ON", Toast.LENGTH_SHORT).show();
-                        //mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
-                    }else{
-                        Toast.makeText(ConfigEstufaActivity.this, "OFF", Toast.LENGTH_SHORT).show();
-                        //mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
-                    }
-                }
-            });
 
         });
         // Voltando ao menu
