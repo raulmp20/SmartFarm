@@ -136,7 +136,7 @@
     <!--Logo Smart Farm-->
     <ImageView
         android:id="@+id/logotipo_fundo"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_height="140dp"
         android:src="@drawable/logotipo_login"
         app:layout_constraintEnd_toEndOf="parent"

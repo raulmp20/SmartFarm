@@ -90,7 +90,8 @@ public class LuminosidadeActivity extends AppCompatActivity {
             startActivity(mudar);
         });
         graficos.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), "Menu de gráficos com as médias de Luminosidade", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LuminosidadeActivity.this, GraficoLumiActivity.class);
+            startActivity(intent);
         });
     }
 

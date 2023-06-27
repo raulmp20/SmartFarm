@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/backgroud">
+
+    <Button
+        android:id="@+id/button_graph_1D"
+        style="@style/ButtonGraph"
+        android:layout_marginStart="90dp"
+        android:layout_marginBottom="10dp"
+        android:text="1D"
+        app:layout_constraintBottom_toTopOf="@id/barchart"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
+    <Button
+        android:id="@+id/button_graph_1S"
+        style="@style/ButtonGraph"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="10dp"
+        android:text="1S"
+        app:layout_constraintTop_toTopOf="@id/button_graph_1D"
+        app:layout_constraintStart_toEndOf="@id/button_graph_1D"
+        />
+
+    <Button
+        android:id="@+id/button_graph_1M"
+        style="@style/ButtonGraph"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="10dp"
+        android:text="1M"
+        app:layout_constraintTop_toTopOf="@id/button_graph_1S"
+        app:layout_constraintStart_toEndOf="@id/button_graph_1S"
+        />
+
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barchart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="1700px"
+        app:layout_constraintTop_toBottomOf="@id/button_graph_1S"
+        app:layout_constraintVertical_bias="0.264"
+        tools:layout_editor_absoluteX="0dp" />
 
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

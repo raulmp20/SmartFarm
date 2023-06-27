@@ -1,16 +1,20 @@
 package com.example.pedroluis;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
@@ -23,76 +27,67 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
-public class UmiSoloActivity extends AppCompatActivity {
+public class GraficoLumiActivity extends AppCompatActivity {
+
     MqttHelper mqttHelper = new MqttHelper();
     private MqttAndroidClient mqttAndroidClient;
     private Boolean auxParaPublicarUmaVez = true;
-
-    String emailAntes;
-    String telefoneAntes;
-
-    Button atualizar;
-    Button voltar;
-    Button graficos;
-    // Text Views
-    TextView mediaHora;
-    TextView mediaDia;
-    TextView valorInstantaneo;
     String val_inst;
-    TextView modulo;
-    // Variáveis para controle de tempo
-    long tempo;
-    long tempoAntes = 0;
 
-
-
-
-    // Adicinando uma informação inicial aos Text's View
-    String info = "Em análise";
+    Button graph_1D;
+    Button graph_1S;
+    Button graph_1M;
 
     String message = "1";
 
-    private Context context;
+    BarChart barChart;
+
+    float valor;
+
+    ArrayList<BarEntry> barEntries = new ArrayList<>();
+
+    int cont = 0;
+
+    long tempo;
+    long tempoAntes = 0;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_umi_solo);
+        setContentView(R.layout.activity_grafico);
+
+        barChart = findViewById(R.id.barchart);
+        graph_1D = findViewById(R.id.button_graph_1D);
+        graph_1M = findViewById(R.id.button_graph_1M);
+        graph_1S = findViewById(R.id.button_graph_1S);
 
         JoaoMqtt();
 
-        Bundle extras = getIntent().getExtras();
-        emailAntes = extras.getString("emailA");
-        telefoneAntes = extras.getString("telefoneA");
-
-        // Instanciando os botões
-        atualizar = findViewById(R.id.Botao_atualizar_umi_solo);
-        voltar = findViewById(R.id.Botao_voltar_umi_solo);
-        graficos = findViewById(R.id.GraficoMedias_umi_solo);
-
-        // Instanciando texts view
-        mediaHora = findViewById(R.id.media_hora_valor_umi_solo);
-        mediaDia = findViewById(R.id.media_dia_valor_umi_solo);
-        valorInstantaneo = findViewById(R.id.ult_oco_valor_umi_solo);
-        modulo = findViewById(R.id.valor_modulo_umi_solo);
-
-        // Dando informações iniciais a eles
-        mediaHora.setText(info);
-        valorInstantaneo.setText(info);
-        mediaDia.setText(info);
-        modulo.setText(info);
-
-        voltar.setOnClickListener(v-> {
-            // mudando a tela para a tela menu
-            Intent mudar = new Intent(UmiSoloActivity.this,MenuEstufaActivity.class);
-            mudar.putExtra("emailA",emailAntes);
-            mudar.putExtra("telefoneA",telefoneAntes);
-            startActivity(mudar);
+        graph_1D.setOnClickListener(view -> {
+            cont = 0;
+            barEntries.clear();
+            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/Lumi/Grafico1D");
         });
-        graficos.setOnClickListener(v->{
-            Intent intent = new Intent(UmiSoloActivity.this, GraficoUmiSoloActivity.class);
-            startActivity(intent);
+
+        graph_1S.setOnClickListener(view -> {
+            cont = 0;
+            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/Lumi/Grafico1S");
         });
+
+        graph_1M.setOnClickListener(view -> {
+            cont = 0;
+            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/Lumi/Grafico1M");
+        });
+
+        /*
+        for (int i=1; i<10; i++){
+            float value = (float) (i*10.0);
+            BarEntry barEntry = new BarEntry(i, value);
+            barEntries.add(barEntry);
+        }
+         */
     }
 
     private void JoaoMqtt() {
@@ -111,18 +106,23 @@ public class UmiSoloActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-
-                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/ValorInstantaneo")) {
+                /*
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/pH/Grafico1D")) {
                     val_inst = mqttMessage.toString();
-                    valorInstantaneo.setText(val_inst);
+                    valor = Float.parseFloat(val_inst);
+                    BarEntry barEntry = new BarEntry(cont, valor);
+                    barEntries.add(barEntry);
+                    cont++;
                 }
-                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmaHora"))
+                 */
+                /*
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorMedioUmaHora"))
                     mediaHora.setText(mqttMessage.toString());
 
-                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmDia"))
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/valorMedioUmDia"))
                     mediaDia.setText(mqttMessage.toString());
 
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Status"))
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Temperatura/Status"))
                     switch (mqttMessage.toString()){
                         case("1"):
                             modulo.setText("Em funcionamento");
@@ -133,38 +133,45 @@ public class UmiSoloActivity extends AppCompatActivity {
                         default:
                             break;
                     }
+                 */
 
-                atualizar.setOnClickListener(view -> {
-                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
-                    Toast.makeText(UmiSoloActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
-                    while (true) {
-                        tempo = System.currentTimeMillis();
-                        if (tempo - tempoAntes >= 1000) {
-                            tempoAntes = tempo;
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorInstantaneo"))
-                                valorInstantaneo.setText(mqttMessage.toString());
 
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmaHora"))
-                                mediaHora.setText(mqttMessage.toString());
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Lumi/MediasHoras")) {
+                    val_inst = mqttMessage.toString();
+                    valor = Float.parseFloat(val_inst);
+                    BarEntry barEntry = new BarEntry(cont, valor);
+                    barEntries.add(barEntry);
+                    cont++;
 
-                            if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/valorMedioUmDia"))
-                                mediaDia.setText(mqttMessage.toString());
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "pH");
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    barDataSet.setDrawValues(false);
+                    barChart.setData(new BarData(barDataSet));
+                    barChart.animateY(5000);
+                    barChart.getDescription().setText("Valores do pH");
+                    barChart.getDescription().setTextColor(Color.BLUE);
+                }
 
-                            if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Status"))
-                                switch (mqttMessage.toString()){
-                                    case("1"):
-                                        modulo.setText("Em funcionamento");
-                                        break;
-                                    case("0"):
-                                        modulo.setText("Não está funcionando");
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            break;
-                        }
-                    }
-                });
+
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Lumi/MediasDias")) {
+                    val_inst = mqttMessage.toString();
+                    valor = Float.parseFloat(val_inst);
+                    BarEntry barEntry = new BarEntry(cont, valor);
+                    barEntries.add(barEntry);
+                    cont++;
+                }
+
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Lumi/MediasSemanas")) {
+                    val_inst = mqttMessage.toString();
+                    valor = Float.parseFloat(val_inst);
+                    BarEntry barEntry = new BarEntry(cont, valor);
+                    barEntries.add(barEntry);
+                    cont++;
+                }
+
+
+
+
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
@@ -197,10 +204,8 @@ public class UmiSoloActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                if(auxParaPublicarUmaVez) {
-                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
-                                    auxParaPublicarUmaVez = false;
-                                }
+                                publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Lumi/Grafico1D");
+                                auxParaPublicarUmaVez = false;
                             }
 
                             @Override
@@ -237,5 +242,5 @@ public class UmiSoloActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }
+

@@ -82,6 +82,18 @@
         <activity
             android:name=".GraficoPhActivity"
             android:exported="false"/>
+        <activity
+            android:name=".GraficoUmiArActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".GraficoUmiSoloActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".GraficoLumiActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".GraficoTempActivity"
+            android:exported="false"/>
         <activity android:name=".UmiSoloActivity"
             android:exported="false"/>
         <activity

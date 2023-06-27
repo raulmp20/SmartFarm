@@ -38,6 +38,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
     String emailAntes;
     String telefoneAntes;
+    String notif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,20 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinner.setAdapter(adapter);
 
+        botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Toast.makeText(ConfigEstufaActivity.this, "ON", Toast.LENGTH_SHORT).show();
+                    notif = "1";
+                }else{
+                    Toast.makeText(ConfigEstufaActivity.this, "OFF", Toast.LENGTH_SHORT).show();
+                    notif = "0";
+                    mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+                }
+            }
+        });
+
         // Atualizando os dados
         salvar.setOnClickListener(v -> {
 
@@ -100,19 +115,10 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
             }
-
-            botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b){
-                        Toast.makeText(ConfigEstufaActivity.this, "ON", Toast.LENGTH_SHORT).show();
-                        //mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
-                    }else{
-                        Toast.makeText(ConfigEstufaActivity.this, "OFF", Toast.LENGTH_SHORT).show();
-                        //mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
-                    }
-                }
-            });
+            if (notif == "1"){
+                mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
+            }
+            else mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
 
         });
         // Voltando ao menu

@@ -19,6 +19,7 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
     MqttHelper mqttHelper;
 
     String number = "35988921894";
+    String number1 = "35998580092";
 
     String telefoneUser;
 
@@ -40,6 +41,7 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
 
         ImageButton fale_conosco = findViewById(R.id.assistencia_fale_conosco);
         Button fale_conosco_b = findViewById(R.id.button_assistencia_fale_conosco);
+        ImageButton converse_com = findViewById(R.id.assistencia_converse_com);
         Button voltar = findViewById(R.id.voltar);
 
         fale_conosco.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +67,26 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
             }
 
     });
+        converse_com.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder confirmaConversa = new AlertDialog.Builder(AssistenciaMenuActivity.this);
+                confirmaConversa.setTitle("Especialista");
+                confirmaConversa.setMessage("Aqui será inserido o contato de um especialista da área que possa dar dicas de cultivo e soluções para o agricultor");
+                confirmaConversa.setCancelable(false);
+                confirmaConversa.setPositiveButton("Falar conosco", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        String url = "https://api.whatsapp.com/send?phone="+number1;
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    }
+                });
+                confirmaConversa.setNegativeButton("Cancelar", null);
+                confirmaConversa.create().show();
+            }
+        });
 
         fale_conosco_b.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -90,7 +90,8 @@ public class TemperaturaActivity extends AppCompatActivity {
             startActivity(mudar);
         });
         graficos.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), "Menu de gráficos com as médias de Temperatura", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(TemperaturaActivity.this, GraficoTempActivity.class);
+            startActivity(intent);
         });
     }
 

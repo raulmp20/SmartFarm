@@ -90,7 +90,8 @@ public class UmiArActivity extends AppCompatActivity {
             startActivity(mudar);
         });
         graficos.setOnClickListener(v->{
-            Toast.makeText(getApplicationContext(), "Menu de gráficos com as médias de Umidade do Ar", Toast.LENGTH_SHORT).show();
+            Intent intent_graphUmiAr = new Intent(UmiArActivity.this, GraficoUmiArActivity.class);
+            startActivity(intent_graphUmiAr);
         });
     }
 
