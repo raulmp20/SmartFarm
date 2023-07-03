@@ -69,7 +69,7 @@
         android:text="LIGAR NOTIFICAÇÕES: "
         android:textColor="@color/White"
         android:textSize="20sp"
-        android:checked="true"
+        android:checked="false"
         android:textOff="OFF"
         android:textOn="ON"
         app:layout_constraintEnd_toEndOf="parent"

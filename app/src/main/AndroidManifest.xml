@@ -12,9 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.PedroLuis">
-        <activity
-            android:name=".teste_spinner"
-            android:exported="false" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -72,7 +70,7 @@
             android:name=".AssistenciaMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".CadastroEstufaActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ConfirmTokenAltSenhaActivity"
@@ -105,7 +103,7 @@
             android:name=".QRCodeScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".CadastroEstufaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

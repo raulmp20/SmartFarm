@@ -40,7 +40,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
 
     Switch botaoSwitch1;
-
+    String switch_value;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,39 +79,31 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         botaoSwitch1 = findViewById(R.id.switch1);
+        Boolean switchState = botaoSwitch1.isChecked();
+        switch_value = String.valueOf(switchState);
 
         Button escanear = findViewById(R.id.button_escanear);
-
         SharedPreferences sharedPreferences = getSharedPreferences("studio.harpreet.sampleproject", MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        botaoSwitch1.setChecked(sharedPreferences.getBoolean("switch", true));
-
         EditText nome_estufa = findViewById(R.id.estufa_nome);
 
         escanear.setOnClickListener(new View.OnClickListener() {
-            String estufa = nome_estufa.getText().toString();
+            String estufa = nome_estufa.getText().toString(); //pegando o valor do item selecionado no spinner
 
             public void onClick (View view){
-                if (botaoSwitch1.isChecked()) {
-                    editor.putBoolean("switch", true);
-                    editor.apply();
-                    Toast.makeText(CadastroEstufaActivity.this, "1", Toast.LENGTH_SHORT).show();
-                }
-                if (!botaoSwitch1.isChecked()) {
-                    editor.putBoolean("switch", false);
-                    editor.apply();
-                    Toast.makeText(CadastroEstufaActivity.this, "0", Toast.LENGTH_SHORT).show();
-                }
+                String item_spinner;
+                item_spinner = spinner.getSelectedItem().toString();
+
                 editor.commit();
                 Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
-                Toast.makeText(CadastroEstufaActivity.this, "Configurações salvas", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CadastroEstufaActivity.this, item_spinner, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CadastroEstufaActivity.this, switch_value, Toast.LENGTH_SHORT).show();
+
                 //intent.putExtra("nomeEstufa", estufa);
-                // startActivity(intent);
+                //startActivity(intent);
 
             }});
-
                     Button voltar = findViewById(R.id.button_voltar);
-
                     voltar.setOnClickListener(view -> {
                         Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
                         startActivity(intent);
