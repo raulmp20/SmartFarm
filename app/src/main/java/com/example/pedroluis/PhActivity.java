@@ -136,7 +136,7 @@ public class PhActivity extends AppCompatActivity {
                         }
 
                 atualizar.setOnClickListener(view -> {
-                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+                    publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
                     Toast.makeText(PhActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();

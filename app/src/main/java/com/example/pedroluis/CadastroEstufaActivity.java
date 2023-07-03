@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,7 +38,8 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     }
 
 
-    SwitchCompat botaoSwitch1;
+
+    Switch botaoSwitch1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,40 +54,39 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         }catch (Exception e){
             System.out.println(e);
         }*/
-        /*Spinner spinner1 = findViewById(R.id.plantsCadastro_spinner);;
 
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("product1");
+        arrayList.add("product2");
+        arrayList.add("product3");
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
+        Spinner spinner = findViewById(R.id.Cadastro_Estufas_spinner);;
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView1, View view1, int position1, long l1) {
-                String item1 = adapterView1.getItemAtPosition(position1).toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String item = adapterView.getItemAtPosition(position).toString();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView1) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
-
-        ArrayList<String> arrayList1 = new ArrayList<>();
-        arrayList1.add("product1");
-        arrayList1.add("product2");
-        arrayList1.add("product3");
-        ArrayAdapter<String> adapter1 =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList1);
-
-        adapter1.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spinner1.setAdapter(adapter1);*/
-
-        EditText nome_estufa = findViewById(R.id.estufa_nome);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinner.setAdapter(adapter);
 
         botaoSwitch1 = findViewById(R.id.switch1);
-        setContentView(R.layout.activity_cadastro_estufas);
+
         Button escanear = findViewById(R.id.button_escanear);
+
         SharedPreferences sharedPreferences = getSharedPreferences("studio.harpreet.sampleproject", MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         botaoSwitch1.setChecked(sharedPreferences.getBoolean("switch", true));
 
+        EditText nome_estufa = findViewById(R.id.estufa_nome);
 
         escanear.setOnClickListener(new View.OnClickListener() {
             String estufa = nome_estufa.getText().toString();

@@ -54,7 +54,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         EditText novo_nome_att;
         novo_nome_att = findViewById(R.id.estufa_novo_nome);
 
-        SwitchCompat botaoSwitch;
+        Switch botaoSwitch;
         botaoSwitch = findViewById(R.id.switch2);
         // Botão "salvar"
         Button salvar;
