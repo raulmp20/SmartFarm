@@ -2,6 +2,7 @@ package com.example.pedroluis;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -36,15 +37,29 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
     }
+    private String switchState = "0";
+    SwitchCompat botaoSwitch1;
 
 
-
-    Switch botaoSwitch1;
-    String switch_value;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_estufas);
+        botaoSwitch1 = (SwitchCompat) findViewById(R.id.switch1);
+
+        botaoSwitch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    switchState = "1";
+                    Toast.makeText(CadastroEstufaActivity.this, "Ligado", Toast.LENGTH_SHORT).show();
+                }else{
+                    switchState = "0";
+                    Toast.makeText(CadastroEstufaActivity.this, "desligado", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         /*try{ //garantindo que escaneamos o qr code
             Bundle extra = getIntent().getExtras();
@@ -61,7 +76,8 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         arrayList.add("product3");
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
-        Spinner spinner = findViewById(R.id.Cadastro_Estufas_spinner);;
+        Spinner spinner = findViewById(R.id.Cadastro_Estufas_spinner);
+        ;
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -78,9 +94,9 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinner.setAdapter(adapter);
 
-        botaoSwitch1 = findViewById(R.id.switch1);
-        Boolean switchState = botaoSwitch1.isChecked();
-        switch_value = String.valueOf(switchState);
+
+        //Boolean switchState = botaoSwitch1.isChecked();
+        //switch_value = Boolean.toString(switchState);
 
         Button escanear = findViewById(R.id.button_escanear);
         SharedPreferences sharedPreferences = getSharedPreferences("studio.harpreet.sampleproject", MODE_PRIVATE);
@@ -88,27 +104,34 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         EditText nome_estufa = findViewById(R.id.estufa_nome);
 
         escanear.setOnClickListener(new View.OnClickListener() {
-            String estufa = nome_estufa.getText().toString(); //pegando o valor do item selecionado no spinner
+            String estufa = nome_estufa.getText().toString();
+            Intent intent = new Intent(CadastroEstufaActivity.this, QRCodeScannerActivity.class);
 
-            public void onClick (View view){
+            public void onClick(View view) {
                 String item_spinner;
                 item_spinner = spinner.getSelectedItem().toString();
 
-                editor.commit();
-                Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
-                Toast.makeText(CadastroEstufaActivity.this, item_spinner, Toast.LENGTH_SHORT).show();
-                Toast.makeText(CadastroEstufaActivity.this, switch_value, Toast.LENGTH_SHORT).show();
-
-                //intent.putExtra("nomeEstufa", estufa);
-                //startActivity(intent);
-
-            }});
-                    Button voltar = findViewById(R.id.button_voltar);
-                    voltar.setOnClickListener(view -> {
-                        Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
-                        startActivity(intent);
-                    });
+                if(estufa.isEmpty())
+                    Toast.makeText(CadastroEstufaActivity.this, "PREENCHA TODOS DADOS", Toast.LENGTH_SHORT).show();
+                else
+                {
+                    intent.putExtra("switchState", switchState);
+                    intent.putExtra("nomeEstufa", estufa);
+                    intent.putExtra("spinnerValue", item_spinner);
+                    startActivity(intent);
                 }
+
+            }
+
+
+        });
+        Button voltar = findViewById(R.id.button_voltar);
+        voltar.setOnClickListener(view -> {
+            Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
+            startActivity(intent);
+        });
+    }
+
 
     /*private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
@@ -168,4 +191,4 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             }
         });
     }*/
-    }
+}

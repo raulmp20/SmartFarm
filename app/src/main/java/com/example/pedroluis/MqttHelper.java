@@ -19,7 +19,7 @@ import java.io.UnsupportedEncodingException;
 //Informações do Broker
 public class MqttHelper {
     private MqttAndroidClient mqttAndroidClient;
-    final private String serverUri = "tcp://192.168.66.12:1883";
+    final private String serverUri = "tcp://192.168.66.50:1883";
     final private String clientId = MqttClient.generateClientId();
 
     final private String Username = "csilab";

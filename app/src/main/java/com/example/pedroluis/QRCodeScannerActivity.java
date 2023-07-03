@@ -16,14 +16,19 @@ public class QRCodeScannerActivity extends Activity {
     private static final String TAG = "QRCodeScannerActivity";
     private String code;
     private TextView text;
-
+    String value_switch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_scanner);
 
-        text = findViewById(R.id.result_text);
 
+        Bundle extras = getIntent().getExtras();
+
+
+        text = findViewById(R.id.result_text);
+        String switchState = extras.getString("switchState");
+        Toast.makeText(this, switchState, Toast.LENGTH_SHORT).show();
         // Inicializa o scanner QR
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
