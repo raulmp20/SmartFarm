@@ -28,7 +28,11 @@ public class QRCodeScannerActivity extends Activity {
 
         text = findViewById(R.id.result_text);
         String switchState = extras.getString("switchState");
+        String nomeEstufa = extras.getString("nomeEstufa");
+        String valorSpinner = extras.getString("spinnerValue");
         Toast.makeText(this, switchState, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, nomeEstufa, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, valorSpinner, Toast.LENGTH_SHORT).show();
         // Inicializa o scanner QR
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
@@ -52,12 +56,12 @@ public class QRCodeScannerActivity extends Activity {
             } else {
                 code = result.getContents();
                 Log.d(TAG, "onActivityResult: Código escaneado: " + code);
-                //Toast.makeText(this, "Código escaneado: " + code, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Código escaneado: " + code, Toast.LENGTH_SHORT).show();
                 text.setText(code);
 
 
 
-                Intent intent = new Intent(this, CadastroEstufaActivity.class);
+                Intent intent = new Intent(this, EstufasCadastradasActivity.class);
                 intent.putExtra("ID",code);
 
                 startActivity(intent);

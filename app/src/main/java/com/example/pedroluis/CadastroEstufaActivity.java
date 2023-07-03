@@ -104,13 +104,13 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         EditText nome_estufa = findViewById(R.id.estufa_nome);
 
         escanear.setOnClickListener(new View.OnClickListener() {
-            String estufa = nome_estufa.getText().toString();
+
             Intent intent = new Intent(CadastroEstufaActivity.this, QRCodeScannerActivity.class);
 
             public void onClick(View view) {
                 String item_spinner;
                 item_spinner = spinner.getSelectedItem().toString();
-
+                String estufa = nome_estufa.getText().toString();
                 if(estufa.isEmpty())
                     Toast.makeText(CadastroEstufaActivity.this, "PREENCHA TODOS DADOS", Toast.LENGTH_SHORT).show();
                 else
