@@ -207,6 +207,8 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 publish(code, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
                                 Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
+                                intent.putExtra("telefoneUser", telefoneU);
+                                intent.putExtra("emailUser", emailU);
                                 startActivity(intent);
                             }
 
