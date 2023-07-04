@@ -23,8 +23,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
@@ -37,20 +43,28 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
     }
+    private MqttAndroidClient mqttAndroidClient;
+    private MqttHelper mqttHelper;
     private String switchState = "0";
     SwitchCompat botaoSwitch1;
 
     String telefoneU;
     String emailU;
-
+    String code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_estufas);
         botaoSwitch1 = (SwitchCompat) findViewById(R.id.switch1);
+        mqttHelper = new MqttHelper();
+
 
         Bundle extras = getIntent().getExtras();
+        if(extras.getString("code") != null){
+            code = extras.getString("code");
+            JoaoMqtt();
+        }
         telefoneU = extras.getString("telefoneA");
         emailU = extras.getString("emailA");
 
@@ -142,8 +156,85 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         });
     }
 
+    private void JoaoMqtt() {
+        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), mqttHelper.getServerUri(), mqttHelper.getClientId());
+        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean b, String s) {
+                Log.w("mqtt", s);
+            }
 
-    /*private void startMqtt() {
+            @Override
+            public void connectionLost(Throwable throwable) {
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                Log.w("Mqtt", mqttMessage.toString());
+                // Exibindo na tela os retornos do Banco de Dados
+
+            }
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+            }
+
+        });
+        //connect();
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setAutomaticReconnect(true);
+        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setUserName(mqttHelper.getUsername());
+        mqttConnectOptions.setPassword(mqttHelper.getPassword().toCharArray());
+
+        try {
+
+            mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+
+                    DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+                    disconnectedBufferOptions.setBufferEnabled(true);
+                    disconnectedBufferOptions.setBufferSize(100);
+                    disconnectedBufferOptions.setPersistBuffer(false);
+                    disconnectedBufferOptions.setDeleteOldestMessages(false);
+                    mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                    //subscribeToTopic();
+                    try {
+                        mqttAndroidClient.subscribe("Smart_Farm/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w("Mqtt", "Subscribed!!!!");
+                                publish(code, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                                Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w("Mqtt", "Subscribed fail!");
+                            }
+                        });
+
+                    } catch (MqttException ex) {
+                        System.err.println("Exceptionst subscribing");
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.w("Mqtt", "Failed to connect to: " + mqttHelper.getServerUri() + exception.toString());
+                }
+            });
+
+
+        } catch (MqttException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
@@ -158,6 +249,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             // messageArrived é uma função que é chamada toda vez que o cliente MQTT recebe uma mensagem
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
+                /*
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Login/Status")){
                     switch (mqttMessage.toString()){
                         case ("00"):
@@ -195,10 +287,24 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             break;
                     }
                 }
+
+                 */
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
             }
         });
-    }*/
+    }
+
+    void publish(String payload, String topic) {
+        byte[] encodedPayload = new byte[0];
+        //teste de conexão
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            mqttAndroidClient.publish(topic, message);
+        } catch (UnsupportedEncodingException | MqttException e) {
+            e.printStackTrace();
+        }
+    }
 }
