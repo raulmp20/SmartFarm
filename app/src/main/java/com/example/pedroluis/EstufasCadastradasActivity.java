@@ -73,7 +73,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         });
 
         nova_estufa.setOnClickListener(view -> {
-            Intent novo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
+            Intent novo = new Intent(EstufasCadastradasActivity.this, CadastroEstufaActivity.class);
             novo.putExtra("emailA", emailUser);
             novo.putExtra("telefoneA", telefoneUser);
             startActivity(novo);

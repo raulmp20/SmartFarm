@@ -40,12 +40,19 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     private String switchState = "0";
     SwitchCompat botaoSwitch1;
 
+    String telefoneU;
+    String emailU;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_estufas);
         botaoSwitch1 = (SwitchCompat) findViewById(R.id.switch1);
+
+        Bundle extras = getIntent().getExtras();
+        telefoneU = extras.getString("telefoneA");
+        emailU = extras.getString("emailA");
 
         botaoSwitch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -115,6 +122,8 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                     Toast.makeText(CadastroEstufaActivity.this, "PREENCHA TODOS DADOS", Toast.LENGTH_SHORT).show();
                 else
                 {
+                    intent.putExtra("telefoneUser", telefoneU);
+                    intent.putExtra("emailUser", emailU);
                     intent.putExtra("switchState", switchState);
                     intent.putExtra("nomeEstufa", estufa);
                     intent.putExtra("spinnerValue", item_spinner);

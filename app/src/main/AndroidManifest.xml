@@ -70,7 +70,7 @@
             android:name=".AssistenciaMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".CadastroEstufaActivity"
             android:exported="false" />
         <activity
             android:name=".ConfirmTokenAltSenhaActivity"
@@ -103,7 +103,7 @@
             android:name=".QRCodeScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".CadastroEstufaActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

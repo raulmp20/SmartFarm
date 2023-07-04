@@ -17,6 +17,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 
+import java.io.UnsupportedEncodingException;
+
 public class QRCodeScannerActivity extends Activity {
     // Pra consultar o banco de dados
     public MqttAndroidClient mqttAndroidClient;
@@ -28,6 +30,9 @@ public class QRCodeScannerActivity extends Activity {
     String switchState;
     String nomeEstufa;
     String valorSpinner;
+
+    String telefoneUser;
+    String emailUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,8 @@ public class QRCodeScannerActivity extends Activity {
         switchState = extras.getString("switchState");
         nomeEstufa = extras.getString("nomeEstufa");
         valorSpinner = extras.getString("spinnerValue");
+        telefoneUser = extras.getString("telefoneUser");
+        emailUser = extras.getString("emailUser");
         setContentView(R.layout.activity_qrcode_scanner);
         mqttHelper = new MqttHelper();
         text = findViewById(R.id.result_text);
@@ -71,20 +78,34 @@ public class QRCodeScannerActivity extends Activity {
 
                 System.out.println(code);
 
+                //PUBLICAND TODOS DADOS DE UMA VEZ
+                publish(code,
+                        "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+
                 Intent intent = new Intent(this, EstufasCadastradasActivity.class);
+                intent.putExtra("telefoneU", telefoneUser);
+                intent.putExtra("emailU", emailUser);
 
                 /*intent.putExtra("switchState",switchState);
                 intent.putExtra("nomeEstufa",nomeEstufa);
                 intent.putExtra("spinnerValue",valorSpinner);
                 intent.putExtra("ID",code);*/
-                //PUBLICAND TODOS DADOS DE UMA VEZ
-                mqttHelper.publish(code,
-                        "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
 
                 startActivity(intent);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    void publish(String payload, String topic) {
+        byte[] encodedPayload = new byte[0];
+        //teste de conexão
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            mqttAndroidClient.publish(topic, message);
+        } catch (UnsupportedEncodingException | MqttException e) {
+            e.printStackTrace();
         }
     }
 }
