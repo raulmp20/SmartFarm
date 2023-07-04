@@ -9,10 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -29,14 +27,12 @@ public class UsuarioActivity extends AppCompatActivity {
 
     private MqttAndroidClient mqttAndroidClient;
 
-
     private TextView email_cadas;
 
     private TextView phone_cadas;
 
     String telefoneUser;
     String emailUser;
-    String emailAntes;
 
     @Override
     public void onBackPressed() {
@@ -65,7 +61,6 @@ public class UsuarioActivity extends AppCompatActivity {
         });
 
         Button voltar = findViewById(R.id.button_voltar_dados);
-
 
         voltar.setOnClickListener(view ->{
             Intent intent = new Intent(UsuarioActivity.this, MenuUsuarioActivity.class);
@@ -124,7 +119,6 @@ public class UsuarioActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
                             }
-
                             @Override
                             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                                 Log.w("Mqtt", "Subscribed fail!");
@@ -142,7 +136,6 @@ public class UsuarioActivity extends AppCompatActivity {
                     Log.w("Mqtt", "Failed to connect to: " + mqttHelper.getServerUri() + exception.toString());
                 }
             });
-
 
         } catch (MqttException ex) {
             ex.printStackTrace();

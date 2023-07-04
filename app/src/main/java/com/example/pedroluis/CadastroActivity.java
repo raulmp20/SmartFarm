@@ -22,16 +22,17 @@ import java.io.UnsupportedEncodingException;
 public class CadastroActivity extends AppCompatActivity {
 
     MqttHelper mqttHelper;
-
     String email_cadastro;
-    int oi;
+    String senha_cadastro;
+    String telefone_cadastro;
+    String confirm_senha_cadastro;
+
     // Cria um objeto para gerenciamento de Sessão
     public static SharedPreferences sharedpreferences;
 
     // Chaves constantes para sharedpreferences
     public static final String SHARED_PREFS = "shared_prefs";
     private String userID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class CadastroActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         mqttHelper  = new MqttHelper();
         startMqtt();
+
         // Pegando as informações das caixas texto
         EditText senha_c = findViewById(R.id.senhaCadastro);
         EditText senha_c_confirm = findViewById(R.id.confirmSenhaCadastro);
@@ -49,12 +51,11 @@ public class CadastroActivity extends AppCompatActivity {
 
         Button realizar_Cadastro = findViewById(R.id.fazer_cadastro1);
 
-
         realizar_Cadastro.setOnClickListener(view -> {
-            String senha_cadastro = senha_c.getText().toString();
-            String confirm_senha_cadastro = senha_c_confirm.getText().toString();
+            senha_cadastro = senha_c.getText().toString();
+            confirm_senha_cadastro = senha_c_confirm.getText().toString();
             email_cadastro = email_c.getText().toString();
-            String telefone_cadastro = telefone_c.getText().toString();
+            telefone_cadastro = telefone_c.getText().toString();
 
             // Verificando se a senha é igual a senha confirmada
             if(senha_cadastro.equals(confirm_senha_cadastro) && !senha_cadastro.isEmpty()) {
@@ -84,10 +85,8 @@ public class CadastroActivity extends AppCompatActivity {
                 Toast.makeText(CadastroActivity.this, "Insira um e-mail", Toast.LENGTH_SHORT).show();
             }
 
-
         });
     }
-
 
     private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());

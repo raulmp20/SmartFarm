@@ -15,12 +15,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Botão login
+        // Botão login e cadastro
         Button fazer_login = findViewById(R.id.ir_login);
-        // Botão cadastro
         Button ir_cadastro = findViewById(R.id.ir_cadastro);
 
-        // pra fazer algo quando clicamos no botão
         fazer_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(login);
             }
         });
-        // pra fazer algo quando clicamos no botão
+
         ir_cadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(cadastrar);
             }
         });
+
     }
 
 }

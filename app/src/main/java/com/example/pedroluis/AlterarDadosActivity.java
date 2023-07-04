@@ -18,8 +18,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class AlterarDadosActivity extends AppCompatActivity {
     MqttHelper mqttHelper;
 
-    String email;
-
     String emailAntes;
     String telefoneAntes;
 
