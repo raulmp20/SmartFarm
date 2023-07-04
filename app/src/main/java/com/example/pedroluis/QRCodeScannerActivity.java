@@ -10,26 +10,36 @@ import androidx.annotation.Nullable;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.android.service.MqttAndroidClient;
 
 public class QRCodeScannerActivity extends Activity {
-
+    // Pra consultar o banco de dados
+    public MqttAndroidClient mqttAndroidClient;
+    // Acessar o banco de dados, var. aux. para banco de dados
+    MqttHelper mqttHelper;
     private static final String TAG = "QRCodeScannerActivity";
     private String code;
     private TextView text;
-    String value_switch;
+    String switchState;
+    String nomeEstufa;
+    String valorSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qrcode_scanner);
-
-
         Bundle extras = getIntent().getExtras();
 
-
+        switchState = extras.getString("switchState");
+        nomeEstufa = extras.getString("nomeEstufa");
+        valorSpinner = extras.getString("spinnerValue");
+        setContentView(R.layout.activity_qrcode_scanner);
+        mqttHelper = new MqttHelper();
         text = findViewById(R.id.result_text);
-        String switchState = extras.getString("switchState");
-        String nomeEstufa = extras.getString("nomeEstufa");
-        String valorSpinner = extras.getString("spinnerValue");
+
         Toast.makeText(this, switchState, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, nomeEstufa, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, valorSpinner, Toast.LENGTH_SHORT).show();
@@ -57,12 +67,19 @@ public class QRCodeScannerActivity extends Activity {
                 code = result.getContents();
                 Log.d(TAG, "onActivityResult: Código escaneado: " + code);
                 Toast.makeText(this, "Código escaneado: " + code, Toast.LENGTH_SHORT).show();
-                text.setText(code);
+                //text.setText(code);
 
-
+                System.out.println(code);
 
                 Intent intent = new Intent(this, EstufasCadastradasActivity.class);
-                intent.putExtra("ID",code);
+
+                /*intent.putExtra("switchState",switchState);
+                intent.putExtra("nomeEstufa",nomeEstufa);
+                intent.putExtra("spinnerValue",valorSpinner);
+                intent.putExtra("ID",code);*/
+                //PUBLICAND TODOS DADOS DE UMA VEZ
+                mqttHelper.publish(code,
+                        "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
 
                 startActivity(intent);
             }

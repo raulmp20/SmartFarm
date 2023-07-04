@@ -118,6 +118,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                     intent.putExtra("switchState", switchState);
                     intent.putExtra("nomeEstufa", estufa);
                     intent.putExtra("spinnerValue", item_spinner);
+
                     startActivity(intent);
                 }
 
