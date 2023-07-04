@@ -51,7 +51,7 @@ public class QRCodeScannerActivity extends Activity {
         if (result != null) {
             if (result.getContents() == null) {
                 Log.d(TAG, "onActivityResult: Escaneamento cancelado");
-                Toast.makeText(this, "Escaneamento cancelado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Escaneamento cancelado!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 code = result.getContents();
