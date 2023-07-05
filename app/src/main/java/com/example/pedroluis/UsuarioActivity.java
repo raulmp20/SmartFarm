@@ -1,6 +1,8 @@
 package com.example.pedroluis;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -23,6 +25,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class UsuarioActivity extends AppCompatActivity {
 
+    // Cria um objeto para gerenciamento de Sessão
+    public static SharedPreferences sharedpreferences;
+    // Chaves constantes para sharedpreferences
+    public static final String SHARED_PREFS = "shared_prefs";
     MqttHelper mqttHelper;
 
     private MqttAndroidClient mqttAndroidClient;
@@ -42,9 +48,11 @@ public class UsuarioActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_usuario);
-        Bundle extras = getIntent().getExtras();
-        telefoneUser = extras.getString("telefoneU");
-        emailUser = extras.getString("emailU");
+
+        // Pega os dados de sessão
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        emailUser = sharedpreferences.getString("email", "");
+        telefoneUser = sharedpreferences.getString("telefone", "");
 
         email_cadas = findViewById(R.id.Email_box);
         phone_cadas = findViewById(R.id.Numero_box);
@@ -55,8 +63,7 @@ public class UsuarioActivity extends AppCompatActivity {
         Button trocaDados = findViewById(R.id.button_troca_dados);
         trocaDados.setOnClickListener(view -> {
             Intent alterar  = new Intent(UsuarioActivity.this, AlterarDadosActivity.class);
-            alterar.putExtra("emailA", emailUser);
-            alterar.putExtra("telefoneA", telefoneUser);
+            alterar.putExtra("emailA",emailUser);
             startActivity(alterar);
         });
 
@@ -64,8 +71,7 @@ public class UsuarioActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(view ->{
             Intent intent = new Intent(UsuarioActivity.this, MenuUsuarioActivity.class);
-            intent.putExtra("emailUser", emailUser);
-            intent.putExtra("telefoneUser", telefoneUser);
+
             startActivity(intent);
         });
     }

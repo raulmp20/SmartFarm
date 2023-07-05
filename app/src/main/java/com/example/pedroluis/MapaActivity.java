@@ -43,28 +43,20 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     double lo2;
     double la2;
 
-    String telefoneUser;
-    String emailUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle extras = getIntent().getExtras();
-        telefoneUser = extras.getString("telefoneUser");
-        emailUser = extras.getString("emailUser");
 
         setContentView(R.layout.activity_mapa);
 
         Button voltar = findViewById(R.id.button_voltar_mapa);
         voltar.setOnClickListener(v->{
             Intent intent = new Intent(MapaActivity.this, FornecedoresActivity.class);
-            intent.putExtra("emailU", emailUser);
-            intent.putExtra("telefoneU", telefoneUser);
+
             startActivity(intent);
         });
-
-
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -73,7 +65,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
         // Adiciona o marcador em santa rita

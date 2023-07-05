@@ -88,7 +88,7 @@
         android:id="@+id/button_escanear"
         style="@style/ButtonDir1"
         android:layout_marginBottom="60dp"
-        android:text="ESCANEAR"
+        android:text="SALVAR"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="251dp" />

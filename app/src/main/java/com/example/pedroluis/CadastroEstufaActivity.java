@@ -48,10 +48,9 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     private String switchState = "0";
     SwitchCompat botaoSwitch1;
 
-    String telefoneU;
-    String emailU;
+    String item_spinner;
     String code;
-
+    String estufa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +62,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras.getString("code") != null){
             code = extras.getString("code");
-            JoaoMqtt();
         }
-        telefoneU = extras.getString("telefoneA");
-        emailU = extras.getString("emailA");
 
         botaoSwitch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -126,21 +122,21 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
         escanear.setOnClickListener(new View.OnClickListener() {
 
-            Intent intent = new Intent(CadastroEstufaActivity.this, QRCodeScannerActivity.class);
+            Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
 
             public void onClick(View view) {
-                String item_spinner;
+
                 item_spinner = spinner.getSelectedItem().toString();
-                String estufa = nome_estufa.getText().toString();
+                estufa = nome_estufa.getText().toString();
                 if(estufa.isEmpty())
                     Toast.makeText(CadastroEstufaActivity.this, "PREENCHA TODOS DADOS", Toast.LENGTH_SHORT).show();
                 else
                 {
-                    intent.putExtra("telefoneUser", telefoneU);
-                    intent.putExtra("emailUser", emailU);
-                    intent.putExtra("switchState", switchState);
+
+                    /*intent.putExtra("switchState", switchState);
                     intent.putExtra("nomeEstufa", estufa);
-                    intent.putExtra("spinnerValue", item_spinner);
+                    intent.putExtra("spinnerValue", item_spinner);*/
+                    JoaoMqtt();
 
                     startActivity(intent);
                 }
@@ -205,11 +201,10 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(code, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
-                                Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
-                                intent.putExtra("telefoneUser", telefoneU);
-                                intent.putExtra("emailUser", emailU);
-                                startActivity(intent);
+                                publish(estufa+"/"+switchState+"/"+item_spinner+"/"+code, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                                //Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
+
+                                //,startActivity(intent);
                             }
 
                             @Override

@@ -40,7 +40,6 @@ public class AlterarDadosEmailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alterar_dados_email);
 
 
-
         // Botão enviar email
         Button enviar_email = findViewById(R.id.Botao_Enviar_Email);
         Button cancelar_envio = findViewById(R.id.Botao_Cancela);
@@ -55,6 +54,7 @@ public class AlterarDadosEmailActivity extends AppCompatActivity {
         enviar_email.setOnClickListener(v -> {
             // atribuindo a "e-mail" o e-mail que eu escrever na tela
             String email = email_alterar.getText().toString();
+
 
             if(email.isEmpty())
                 Toast.makeText(AlterarDadosEmailActivity.this, "Insira um e-mail", Toast.LENGTH_SHORT).show();

@@ -45,8 +45,6 @@ public class TrocaSenhaActivity extends AppCompatActivity {
         Button voltar;
         voltar = findViewById(R.id.Botao_Sair_ADT);
 
-
-
         // Atualizando os dados
         salvar.setOnClickListener(v -> {
 

@@ -47,8 +47,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         startMqtt();
 
         Bundle extras = getIntent().getExtras();
-        emailAntes = extras.getString("emailA");
-        telefoneAntes = extras.getString("telefoneA");
+
 
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
@@ -119,8 +118,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         voltar.setOnClickListener(v -> {
             // Mudando a tela para a tela menu
             Intent mudar = new Intent(ConfigEstufaActivity.this, MenuEstufaActivity.class);
-            mudar.putExtra("emailA",emailAntes);
-            mudar.putExtra("telefoneA",telefoneAntes);
+
             startActivity(mudar);
         });
     }

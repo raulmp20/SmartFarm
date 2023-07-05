@@ -62,8 +62,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         JoaoMqtt();
 
         Bundle extras = getIntent().getExtras();
-        emailAntes = extras.getString("emailA");
-        telefoneAntes = extras.getString("telefoneA");
+
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_t);
@@ -85,8 +84,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela menu
             Intent mudar = new Intent(TemperaturaActivity.this,MenuEstufaActivity.class);
-            mudar.putExtra("emailA",emailAntes);
-            mudar.putExtra("telefoneA",telefoneAntes);
+
             startActivity(mudar);
         });
         graficos.setOnClickListener(v->{

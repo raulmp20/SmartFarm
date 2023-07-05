@@ -23,7 +23,10 @@ public class LoginActivity extends AppCompatActivity {
     public MqttAndroidClient mqttAndroidClient;
     // Acessar o banco de dados, var. aux. para banco de dados
     MqttHelper mqttHelper;
-
+    // Cria um objeto para gerenciamento de Sessão
+    public static SharedPreferences sharedpreferences;
+    // Chaves constantes para sharedpreferences
+    public static final String SHARED_PREFS = "shared_prefs";
     String email;
     String senha;
     @Override  // coloca coisas basicas da tela, funcionalidades
@@ -113,8 +116,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     String telefoneL = mqttMessage.toString();
                     Intent logado = new Intent(LoginActivity.this, MenuUsuarioActivity.class);
-                    logado.putExtra("telefoneUser", telefoneL);
-                    logado.putExtra("emailUser", email);
+                    // Pega os dados de sessão
+                    sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("email",email);
+                    editor.putString("telefone", telefoneL);
+                    editor.apply();
+
                     startActivity(logado);
                     // Exclui essa tela ao sair para não guardar as info que pus nela
                     onRestart();

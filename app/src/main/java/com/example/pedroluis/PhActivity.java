@@ -63,8 +63,7 @@ public class PhActivity extends AppCompatActivity {
         JoaoMqtt();
 
         Bundle extras = getIntent().getExtras();
-        emailAntes = extras.getString("emailA");
-        telefoneAntes = extras.getString("telefoneA");
+
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_ph);
@@ -86,8 +85,7 @@ public class PhActivity extends AppCompatActivity {
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela menu
             Intent mudar = new Intent(PhActivity.this,MenuEstufaActivity.class);
-            mudar.putExtra("emailA",emailAntes);
-            mudar.putExtra("telefoneA",telefoneAntes);
+
             startActivity(mudar);
         });
         graficos.setOnClickListener(v->{

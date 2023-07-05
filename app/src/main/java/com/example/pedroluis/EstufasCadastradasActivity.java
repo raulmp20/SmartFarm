@@ -34,8 +34,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
     String message = "1";
 
     private ListView listView;
-    String telefoneUser;
-    String emailUser;
+
     private List<String> IdEstufaList;
     private ArrayAdapter<String> adapter;
 
@@ -49,9 +48,6 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
 
         IdEstufaList = new ArrayList<>();
 
-        Bundle extras = getIntent().getExtras();
-        telefoneUser = extras.getString("telefoneU");
-        emailUser = extras.getString("emailU");
 
 
         listView = findViewById(R.id.lista_estufas);
@@ -73,16 +69,14 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         });
 
         nova_estufa.setOnClickListener(view -> {
-            Intent novo = new Intent(EstufasCadastradasActivity.this, CadastroEstufaActivity.class);
-            novo.putExtra("emailA", emailUser);
-            novo.putExtra("telefoneA", telefoneUser);
+            Intent novo = new Intent(EstufasCadastradasActivity.this, QRCodeScannerActivity.class);
+
             startActivity(novo);
         });
 
         voltar.setOnClickListener(view -> {
             Intent back = new Intent(EstufasCadastradasActivity.this, MenuUsuarioActivity.class);
-            back.putExtra("emailUser", emailUser);
-            back.putExtra("telefoneUser", telefoneUser);
+
             startActivity(back);
         });
     }

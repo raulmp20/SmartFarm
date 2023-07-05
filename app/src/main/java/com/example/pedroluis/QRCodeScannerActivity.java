@@ -45,18 +45,17 @@ public class QRCodeScannerActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         startMqtt();
 
-        switchState = extras.getString("switchState");
+        /*switchState = extras.getString("switchState");
         nomeEstufa = extras.getString("nomeEstufa");
-        valorSpinner = extras.getString("spinnerValue");
-        telefoneUser = extras.getString("telefoneUser");
-        emailUser = extras.getString("emailUser");
+        valorSpinner = extras.getString("spinnerValue");*/
+
         setContentView(R.layout.activity_qrcode_scanner);
         mqttHelper = new MqttHelper();
         text = findViewById(R.id.result_text);
 
-        Toast.makeText(this, switchState, Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(this, switchState, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, nomeEstufa, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, valorSpinner, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, valorSpinner, Toast.LENGTH_SHORT).show();*/
         // Inicializa o scanner QR
 
         IntentIntegrator integrator = new IntentIntegrator(this);
@@ -92,8 +91,6 @@ public class QRCodeScannerActivity extends Activity {
 
                 Intent intent = new Intent(this, CadastroEstufaActivity.class);
 
-                intent.putExtra("telefoneU", telefoneUser);
-                intent.putExtra("emailU", emailUser);
                 /*intent.putExtra("switchState",switchState);
                 intent.putExtra("nomeEstufa",nomeEstufa);
                 intent.putExtra("spinnerValue",valorSpinner);
@@ -170,7 +167,7 @@ public class QRCodeScannerActivity extends Activity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    mqttHelper.publish("nomeEstufa", "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                                    //mqttHelper.publish("nomeEstufa", "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }

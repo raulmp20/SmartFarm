@@ -34,10 +34,6 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assistencia_tecnica);
 
-        Bundle extras = getIntent().getExtras();
-
-        telefoneUser = extras.getString("telefoneUs");
-        emailUser = extras.getString("emailUs");
 
         ImageButton fale_conosco = findViewById(R.id.assistencia_fale_conosco);
         Button fale_conosco_b = findViewById(R.id.button_assistencia_fale_conosco);
@@ -113,8 +109,6 @@ public class AssistenciaMenuActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(view ->{
             Intent voltar_usuario = new Intent(AssistenciaMenuActivity.this, MenuUsuarioActivity.class);
-            voltar_usuario.putExtra("emailUser", emailUser);
-            voltar_usuario.putExtra("telefoneUser", telefoneUser);
             startActivity(voltar_usuario);
         });
     }

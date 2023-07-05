@@ -31,7 +31,6 @@ public class AlterarDadosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alterar_dados);
         Bundle extras = getIntent().getExtras();
         emailAntes = extras.getString("emailA");
-        telefoneAntes = extras.getString("telefoneA");
 
         startMqtt();
 
@@ -70,8 +69,7 @@ public class AlterarDadosActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(view ->{
             Intent intent = new Intent(AlterarDadosActivity.this, MenuUsuarioActivity.class);
-            intent.putExtra("emailUser",emailAntes);
-            intent.putExtra("telefoneUser",telefoneAntes);
+
             startActivity(intent);
         });
     }
