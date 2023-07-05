@@ -120,7 +120,7 @@ public class UsuarioActivity extends AppCompatActivity {
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
                     //subscribeToTopic();
                     try {
-                        mqttAndroidClient.subscribe("ParkHere/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
+                        mqttAndroidClient.subscribe("Smart_Farm/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");

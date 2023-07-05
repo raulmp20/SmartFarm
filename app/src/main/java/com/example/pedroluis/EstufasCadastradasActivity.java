@@ -1,6 +1,8 @@
 package com.example.pedroluis;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,18 +33,26 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
     private MqttHelper mqttHelper;
     private MqttAndroidClient mqttAndroidClient;
     boolean auxParaPublicarUmaVez = true;
+
+    public static SharedPreferences sharedpreferences;
+    // Chaves constantes para sharedpreferences
+    public static final String SHARED_PREFS = "shared_prefs";
     String message = "1";
 
     private ListView listView;
 
     private List<String> IdEstufaList;
     private ArrayAdapter<String> adapter;
+    String emailUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_estufas_cadastradas);
+
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        emailUser = sharedpreferences.getString("email", "");
 
         mqttHelper = new MqttHelper();
 
@@ -138,7 +148,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                                 Log.w("Mqtt", "Subscribed!");
                                 if(auxParaPublicarUmaVez) {
                                     //Publica no topico toda vez que se entra na página.
-                                    publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/User");
+                                    publish(emailUser, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/User");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }
