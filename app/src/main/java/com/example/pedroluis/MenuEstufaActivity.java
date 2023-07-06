@@ -12,8 +12,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
     String firstCheckMain = "Tgg";
     // Passando esse parâmrtro para as próximas telas
 
-    String emailAntes;
-    String telefoneAntes;
+
+    String nome_estufa;
 
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Bundle extras = getIntent().getExtras();
+
+        nome_estufa = extras.getString("estufa");
 
 
         // Representante dos botões do front-end para serem manipulados pelo back-end e enviados ao front-end
@@ -73,13 +75,12 @@ public class MenuEstufaActivity extends AppCompatActivity {
         config.setOnClickListener(v-> {
             // mudando para tela de config
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
-
+            mudar.putExtra("estufa", nome_estufa);
             startActivity(mudar);
         });
         config_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
-
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -87,7 +88,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
         PH.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,PhActivity.class);
-
+            mudar.putExtra("estufa", nome_estufa);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -95,7 +96,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
         image_ph.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,PhActivity.class);
-
+            mudar.putExtra("estufa", nome_estufa);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();

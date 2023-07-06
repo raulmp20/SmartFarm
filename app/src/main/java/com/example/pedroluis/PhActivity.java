@@ -54,15 +54,19 @@ public class PhActivity extends AppCompatActivity {
 
     String message = "1";
 
+    String nome_estufa;
+
     private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ph);
 
-        JoaoMqtt();
-
         Bundle extras = getIntent().getExtras();
+
+        nome_estufa = extras.getString("estufa");
+
+        JoaoMqtt();
 
 
         // Instanciando os botões
@@ -197,7 +201,7 @@ public class PhActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+                                    publish(nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }
