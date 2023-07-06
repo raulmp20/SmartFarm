@@ -107,7 +107,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/User")) {
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufas/User")) {
                     //Adiciona as notificações retornadas pelo broker a lista
                     IdEstufaList.add(mqttMessage.toString());
 

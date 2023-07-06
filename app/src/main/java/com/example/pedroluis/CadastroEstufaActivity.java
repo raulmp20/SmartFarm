@@ -1,5 +1,6 @@
 package com.example.pedroluis;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -38,7 +39,10 @@ import java.util.ArrayList;
 
 public class CadastroEstufaActivity extends AppCompatActivity {
 
-    //MqttHelper mqttHelper;
+    // Cria um objeto para gerenciamento de Sessão
+    public static SharedPreferences sharedpreferences;
+    // Chaves constantes para sharedpreferences
+    public static final String SHARED_PREFS = "shared_prefs";
 
     @Override
     public void onBackPressed() {
@@ -48,11 +52,18 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     private String switchState = "0";
     SwitchCompat botaoSwitch1;
 
+    String emailUser;
     String item_spinner;
     String code;
     String estufa;
+    int code2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Pega os dados de sessão
+        // Pega os dados de sessão
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        emailUser = sharedpreferences.getString("email", "");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_estufas);
         botaoSwitch1 = (SwitchCompat) findViewById(R.id.switch1);
@@ -63,6 +74,11 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         if(extras.getString("code") != null){
             code = extras.getString("code");
         }
+
+        //passando qrcode para tipo int
+        code2 = Integer.valueOf(code);
+
+
 
         botaoSwitch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -78,14 +94,6 @@ public class CadastroEstufaActivity extends AppCompatActivity {
         });
 
 
-        /*try{ //garantindo que escaneamos o qr code
-            Bundle extra = getIntent().getExtras();
-            ID = extra.getString("ID");
-            Toast.makeText(this, "ID: "+ID, Toast.LENGTH_SHORT).show();
-            scaneado = true;
-        }catch (Exception e){
-            System.out.println(e);
-        }*/
 
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("product1");
@@ -201,7 +209,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(estufa+"/"+switchState+"/"+item_spinner+"/"+code, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                                publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+item_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
                                 //Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
 
                                 //,startActivity(intent);
