@@ -39,10 +39,11 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     public MqttAndroidClient mqttAndroidClient;
     // Acessar o banco de dados, var. aux. para banco de dados
     MqttHelper mqttHelper;
-
+    private String switchState1 = "0";
     String emailAntes;
     String telefoneAntes;
     String nome_estufa;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,18 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         voltar = findViewById(R.id.button_voltar_config);
 
         Spinner spinner = findViewById(R.id.plants_spinner);
-
+        botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    switchState1 = "1";
+                    Toast.makeText(ConfigEstufaActivity.this, "Ligado", Toast.LENGTH_SHORT).show();
+                } else {
+                    switchState1 = "0";
+                    Toast.makeText(ConfigEstufaActivity.this, "desligado", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -100,23 +112,11 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
             // Verificando se a senha é igual a senha confirmada
             if (!nomeNovo.isEmpty()) {
-                mqttHelper.publish(nomeNovo, "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Nome");
+                mqttHelper.publish(nomeNovo, "Smart_Farm/" + mqttHelper.getClientId() + "/Estufa/Atualiza/Nome");
             } else {
                 Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
             }
 
-            botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b){
-                        Toast.makeText(ConfigEstufaActivity.this, "ON", Toast.LENGTH_SHORT).show();
-                        //mqttHelper.publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
-                    }else{
-                        Toast.makeText(ConfigEstufaActivity.this, "OFF", Toast.LENGTH_SHORT).show();
-                        //mqttHelper.publish("0", "Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Notf");
-                    }
-                }
-            });
 
         });
         // Voltando ao menu
@@ -146,7 +146,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             // messageArrived é uma função que é chamada toda vez que o cliente MQTT recebe uma mensagem
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
-                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufa/Atualiza/Status")) {
+                if (topic.equals("Smart_Farm/" + mqttHelper.getClientId() + "/Estufa/Atualiza/Status")) {
                     switch (mqttMessage.toString()) {
                         // TROCAR: 00 -> E-mail não encontrado, 01 -> Pin inválido, 11 -> Senha atualizada
                         case ("00"):
@@ -164,7 +164,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                             break;
                     }
                 }
-                if(topic.equals("Smart_Farm/Atualiza/StatusPin")) {
+                if (topic.equals("Smart_Farm/Atualiza/StatusPin")) {
                     switch (mqttMessage.toString()) {
                         case ("0"):
                             Toast.makeText(ConfigEstufaActivity.this, "E-mail não encontrado", Toast.LENGTH_SHORT).show();
@@ -177,6 +177,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
             }
