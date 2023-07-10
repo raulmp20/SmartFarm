@@ -5,14 +5,33 @@ import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.UnsupportedEncodingException;
+
 public class MenuEstufaActivity extends AppCompatActivity {
+    MqttHelper mqttHelper;
+    private MqttAndroidClient mqttAndroidClient;
+    boolean auxParaPublicarUmaVez = true;
+
+
     String firstCheckMain = "Tgg";
     // Passando esse parâmrtro para as próximas telas
 
@@ -22,7 +41,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mqttHelper = new MqttHelper();
+        JoaoMqtt();
         //fazendo com o cód olhe para tela de menu
         setContentView(R.layout.activity_menu);
         // Pega os dados de sessão
@@ -80,12 +100,13 @@ public class MenuEstufaActivity extends AppCompatActivity {
         config.setOnClickListener(v-> {
             // mudando para tela de config
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
-            mudar.putExtra("estufa", nome_estufa);
+            publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
             startActivity(mudar);
         });
         config_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
+            publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -93,7 +114,6 @@ public class MenuEstufaActivity extends AppCompatActivity {
         PH.setOnClickListener(v-> {
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,PhActivity.class);
-            mudar.putExtra("estufa", nome_estufa);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -181,5 +201,93 @@ public class MenuEstufaActivity extends AppCompatActivity {
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
         });
+    }
+
+    private void JoaoMqtt() {
+        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), mqttHelper.getServerUri(), mqttHelper.getClientId());
+        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean b, String s) {
+                Log.w("mqtt", s);
+            }
+
+            @Override
+            public void connectionLost(Throwable throwable) {
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                Log.w("Mqtt", mqttMessage.toString());
+                // Exibindo na tela os retornos do Banco de Dados
+
+            }
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+            }
+
+        });
+        //connect();
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setAutomaticReconnect(true);
+        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setUserName(mqttHelper.getUsername());
+        mqttConnectOptions.setPassword(mqttHelper.getPassword().toCharArray());
+
+        try {
+
+            mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+
+                    DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+                    disconnectedBufferOptions.setBufferEnabled(true);
+                    disconnectedBufferOptions.setBufferSize(100);
+                    disconnectedBufferOptions.setPersistBuffer(false);
+                    disconnectedBufferOptions.setDeleteOldestMessages(false);
+                    mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                    //subscribeToTopic();
+                    try {
+                        mqttAndroidClient.subscribe("Smart_Farm/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w("Mqtt", "Subscribed!");
+
+                            }
+
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w("Mqtt", "Subscribed fail!");
+                            }
+                        });
+
+                    } catch (MqttException ex) {
+                        System.err.println("Exceptionst subscribing");
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.w("Mqtt", "Failed to connect to: " + mqttHelper.getServerUri() + exception.toString());
+                }
+            });
+
+
+        } catch (MqttException ex) {
+            ex.printStackTrace();
+        }
+    }
+    //Bloco que envia comandos para o broker
+    void publish(String payload, String topic) {
+        byte[] encodedPayload = new byte[0];
+        //teste de conexão
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            mqttAndroidClient.publish(topic, message);
+        } catch (UnsupportedEncodingException | MqttException e) {
+            e.printStackTrace();
+        }
     }
 }
