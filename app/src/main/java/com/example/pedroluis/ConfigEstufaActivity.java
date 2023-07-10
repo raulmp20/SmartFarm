@@ -43,7 +43,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     String emailAntes;
     String telefoneAntes;
     String nome_estufa;
-
+    SwitchCompat botaoSwitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +59,8 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         EditText novo_nome_att;
         novo_nome_att = findViewById(R.id.estufa_novo_nome);
 
-        SwitchCompat botaoSwitch;
-        botaoSwitch = findViewById(R.id.switch2);
+
+        botaoSwitch = (SwitchCompat) findViewById(R.id.switch2);
         // Botão "salvar"
         Button salvar;
         salvar = findViewById(R.id.button_salvar_config);
