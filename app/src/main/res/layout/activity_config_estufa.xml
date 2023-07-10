@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/logotipo_login"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="70dp"
         android:layout_height="150dp"
         android:src="@drawable/logotipo_cadastro"
@@ -42,6 +42,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/config" />
 
+    <TextView
+        android:id="@+id/estufa_nome_atual"
+        android:background="@drawable/button_contorno"
+        android:layout_width="310dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:hint=""
+        android:imeOptions="actionSend"
+        android:textColorHint="@color/White"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_config" />
     <EditText
         android:id="@+id/estufa_novo_nome"
         android:background="@drawable/button_contorno"
@@ -54,14 +67,14 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_config" />
+        app:layout_constraintTop_toBottomOf="@+id/estufa_nome_atual" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:switchMinWidth="56dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="LIGAR NOTIFICAÇÕES: "
         android:textColor="@color/White"
         android:textSize="20dp"
@@ -75,7 +88,7 @@
         android:id="@+id/plants_spinner"
         android:layout_width="120dp"
         android:layout_height="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_contorno"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
