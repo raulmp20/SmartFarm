@@ -73,7 +73,12 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                 Object listItem = listView.getItemAtPosition(position);
                 Intent goInfo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
                 //envia o conteudo da notificacao através de um putExtra
-                goInfo.putExtra("estufa", listItem.toString());
+
+                sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("estufa",listItem.toString());
+
+                editor.apply();
                 startActivity(goInfo);
             }
         });

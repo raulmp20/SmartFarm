@@ -1,10 +1,14 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +16,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
     String firstCheckMain = "Tgg";
     // Passando esse parâmrtro para as próximas telas
 
-
+    public static final String SHARED_PREFS = "shared_prefs";
     String nome_estufa;
 
     @Override  // coloca coisas basicas da tela, funcionalidades
@@ -21,10 +25,11 @@ public class MenuEstufaActivity extends AppCompatActivity {
 
         //fazendo com o cód olhe para tela de menu
         setContentView(R.layout.activity_menu);
-
+        // Pega os dados de sessão
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
         Bundle extras = getIntent().getExtras();
 
-        nome_estufa = extras.getString("estufa");
 
 
         // Representante dos botões do front-end para serem manipulados pelo back-end e enviados ao front-end

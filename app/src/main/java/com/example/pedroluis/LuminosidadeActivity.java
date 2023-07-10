@@ -1,5 +1,8 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -50,7 +53,7 @@ public class LuminosidadeActivity extends AppCompatActivity {
 
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
-
+    String nome_estufa;
     String message = "1";
 
     private Context context;
@@ -62,7 +65,8 @@ public class LuminosidadeActivity extends AppCompatActivity {
         JoaoMqtt();
 
         Bundle extras = getIntent().getExtras();
-
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_l);

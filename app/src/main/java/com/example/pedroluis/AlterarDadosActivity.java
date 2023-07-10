@@ -29,6 +29,8 @@ public class AlterarDadosActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_dados);
+
+        //Email anterior é usado para que seja enviado o email p/troca de dados
         Bundle extras = getIntent().getExtras();
         emailAntes = extras.getString("emailA");
 
@@ -38,6 +40,7 @@ public class AlterarDadosActivity extends AppCompatActivity {
         EditText telefone_alt = findViewById(R.id.Numero_box_alt);
 
         Button trocaDadosconfirm = findViewById(R.id.button_salvar_dados);
+
         // pra fazer algo quando clicamos no botão
         trocaDadosconfirm.setOnClickListener(view -> {
 

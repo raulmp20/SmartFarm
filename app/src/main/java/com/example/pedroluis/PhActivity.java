@@ -1,5 +1,8 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -64,7 +67,8 @@ public class PhActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        nome_estufa = extras.getString("estufa");
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
 
         JoaoMqtt();
 

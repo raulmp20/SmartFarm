@@ -1,5 +1,8 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -46,8 +49,7 @@ public class UmiArActivity extends AppCompatActivity {
     long tempoAntes = 0;
 
 
-
-
+    String nome_estufa;
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
 
@@ -62,7 +64,8 @@ public class UmiArActivity extends AppCompatActivity {
         JoaoMqtt();
 
         Bundle extras = getIntent().getExtras();
-
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_umi_ar);

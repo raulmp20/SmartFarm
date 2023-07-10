@@ -1,8 +1,12 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
@@ -38,7 +42,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
     String emailAntes;
     String telefoneAntes;
-
+    String nome_estufa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,8 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         startMqtt();
 
         Bundle extras = getIntent().getExtras();
-
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
 
         // Pegando as informações das caixas texto
         EditText novo_nome_att;

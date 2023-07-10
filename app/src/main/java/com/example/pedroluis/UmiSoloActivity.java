@@ -1,5 +1,8 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +53,7 @@ public class UmiSoloActivity extends AppCompatActivity {
 
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
-
+    String nome_estufa;
     String message = "1";
 
     private Context context;
@@ -58,7 +61,8 @@ public class UmiSoloActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_umi_solo);
-
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
         JoaoMqtt();
 
         Bundle extras = getIntent().getExtras();

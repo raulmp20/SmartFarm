@@ -1,5 +1,8 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -52,7 +55,7 @@ public class TemperaturaActivity extends AppCompatActivity {
     String info = "Em análise";
 
     String message = "1";
-
+    String nome_estufa;
     private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,8 @@ public class TemperaturaActivity extends AppCompatActivity {
         JoaoMqtt();
 
         Bundle extras = getIntent().getExtras();
-
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_t);
