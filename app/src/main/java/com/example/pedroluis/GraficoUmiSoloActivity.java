@@ -1,5 +1,9 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,10 +57,15 @@ public class GraficoUmiSoloActivity extends AppCompatActivity {
     long tempo;
     long tempoAntes = 0;
 
+    String idEstufa;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grafico);
+
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        idEstufa = sharedpreferences.getString("idEstufa", "");
 
         barChart = findViewById(R.id.barchart);
         graph_1D = findViewById(R.id.button_graph_1D);
@@ -68,17 +77,17 @@ public class GraficoUmiSoloActivity extends AppCompatActivity {
         graph_1D.setOnClickListener(view -> {
             cont = 0;
             barEntries.clear();
-            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/UmiSolo/Grafico1D");
+            publish(idEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/UmiSolo/Grafico1D");
         });
 
         graph_1S.setOnClickListener(view -> {
             cont = 0;
-            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/UmiSolo/Grafico1S");
+            publish(idEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/UmiSolo/Grafico1S");
         });
 
         graph_1M.setOnClickListener(view -> {
             cont = 0;
-            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/UmiSolo/Grafico1M");
+            publish(idEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/UmiSolo/Grafico1M");
         });
 
         /*
@@ -204,7 +213,7 @@ public class GraficoUmiSoloActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Grafico1D");
+                                publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Grafico1D");
                                 auxParaPublicarUmaVez = false;
                             }
 

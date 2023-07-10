@@ -1,5 +1,6 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
 import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
 
 import android.content.Context;
@@ -37,6 +38,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFS = "shared_prefs";
     String nome_estufa;
+    String idEstufa;
 
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +123,6 @@ public class MenuEstufaActivity extends AppCompatActivity {
         image_ph.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,PhActivity.class);
-            mudar.putExtra("estufa", nome_estufa);
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();
@@ -218,7 +219,14 @@ public class MenuEstufaActivity extends AppCompatActivity {
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
-                // Exibindo na tela os retornos do Banco de Dados
+
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/idEstufa")){
+                    idEstufa = mqttMessage.toString();
+                    sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("idEstufa", idEstufa);
+                    editor.apply();
+                }
 
             }
             @Override
@@ -252,7 +260,8 @@ public class MenuEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
-
+                                publish(nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/idEstufa/Info");
+                                auxParaPublicarUmaVez = false;
                             }
 
                             @Override

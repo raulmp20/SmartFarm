@@ -180,6 +180,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                             break;
                     }
                 }
+
             }
 
             @Override

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -48,7 +49,7 @@ public class UmiArActivity extends AppCompatActivity {
     long tempo;
     long tempoAntes = 0;
 
-
+    String idEstufa;
     String nome_estufa;
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
@@ -65,7 +66,7 @@ public class UmiArActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        nome_estufa = sharedpreferences.getString("estufa", "");
+        idEstufa = sharedpreferences.getString("idEstufa", "");
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_umi_ar);
@@ -136,7 +137,7 @@ public class UmiArActivity extends AppCompatActivity {
                     }
 
                 atualizar.setOnClickListener(view -> {
-                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiAr/Info");
+                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiAr/Info");
                     Toast.makeText(UmiArActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
@@ -199,7 +200,7 @@ public class UmiArActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiAr/Info");
+                                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiAr/Info");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }

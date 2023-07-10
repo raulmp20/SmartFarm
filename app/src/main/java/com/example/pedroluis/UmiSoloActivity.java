@@ -6,6 +6,7 @@ import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -48,12 +49,14 @@ public class UmiSoloActivity extends AppCompatActivity {
     long tempo;
     long tempoAntes = 0;
 
+    String idEstufa;
+    String nome_estufa;
+
 
 
 
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
-    String nome_estufa;
     String message = "1";
 
     private Context context;
@@ -62,10 +65,8 @@ public class UmiSoloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_umi_solo);
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        nome_estufa = sharedpreferences.getString("estufa", "");
+        idEstufa = sharedpreferences.getString("idEstufa", "");
         JoaoMqtt();
-
-        Bundle extras = getIntent().getExtras();
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_umi_solo);
@@ -136,7 +137,7 @@ public class UmiSoloActivity extends AppCompatActivity {
                     }
 
                 atualizar.setOnClickListener(view -> {
-                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
+                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
                     Toast.makeText(UmiSoloActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
@@ -199,7 +200,7 @@ public class UmiSoloActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
+                                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/UmiSolo/Info");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }

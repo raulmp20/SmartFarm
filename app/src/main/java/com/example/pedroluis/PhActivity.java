@@ -71,7 +71,7 @@ public class PhActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        nome_estufa = sharedpreferences.getString("estufa", "");
+        idEstufa = sharedpreferences.getString("idEstufa", "");
 
         JoaoMqtt();
 
@@ -143,16 +143,10 @@ public class PhActivity extends AppCompatActivity {
                             default:
                                 break;
                         }
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/idEstufa")){
-                    idEstufa = mqttMessage.toString();
-                    sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("idEstufa", idEstufa);
-                    editor.apply();
-                }
+
 
                 atualizar.setOnClickListener(view -> {
-                    publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
                     Toast.makeText(PhActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
@@ -215,7 +209,7 @@ public class PhActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    publish(nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
+                                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }

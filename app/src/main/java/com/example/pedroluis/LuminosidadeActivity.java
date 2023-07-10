@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -54,6 +55,7 @@ public class LuminosidadeActivity extends AppCompatActivity {
     // Adicinando uma informação inicial aos Text's View
     String info = "Em análise";
     String nome_estufa;
+    String idEstufa;
     String message = "1";
 
     private Context context;
@@ -66,7 +68,7 @@ public class LuminosidadeActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        nome_estufa = sharedpreferences.getString("estufa", "");
+        idEstufa = sharedpreferences.getString("idEstufa", "");
 
         // Instanciando os botões
         atualizar = findViewById(R.id.Botao_atualizar_l);
@@ -137,7 +139,7 @@ public class LuminosidadeActivity extends AppCompatActivity {
                     }
 
                 atualizar.setOnClickListener(view -> {
-                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Luminosidade/Info");
+                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Luminosidade/Info");
                     Toast.makeText(LuminosidadeActivity.this, "Aguarde as leituras", Toast.LENGTH_SHORT).show();
                     while (true) {
                         tempo = System.currentTimeMillis();
@@ -200,7 +202,7 @@ public class LuminosidadeActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
                                 if(auxParaPublicarUmaVez) {
-                                    publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Luminosidade/Info");
+                                    publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Luminosidade/Info");
                                     auxParaPublicarUmaVez = false;
                                 }
                             }
