@@ -23,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -43,6 +44,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     String emailAntes;
     String telefoneAntes;
     String nome_estufa;
+    private TextView caixa_nomeEstufa;
     SwitchCompat botaoSwitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,9 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         nome_estufa = sharedpreferences.getString("estufa", "");
+        caixa_nomeEstufa = findViewById(R.id.estufa_nome_atual);
 
+        caixa_nomeEstufa.setText(nome_estufa);
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
         novo_nome_att = findViewById(R.id.estufa_novo_nome);
