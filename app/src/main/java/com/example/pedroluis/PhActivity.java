@@ -6,6 +6,7 @@ import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -45,6 +46,8 @@ public class PhActivity extends AppCompatActivity {
     TextView valorInstantaneo;
     String val_inst;
     TextView modulo;
+
+    String idEstufa;
     // Variáveis para controle de tempo
     long tempo;
     long tempoAntes = 0;
@@ -140,6 +143,13 @@ public class PhActivity extends AppCompatActivity {
                             default:
                                 break;
                         }
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/idEstufa")){
+                    idEstufa = mqttMessage.toString();
+                    sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("idEstufa", idEstufa);
+                    editor.apply();
+                }
 
                 atualizar.setOnClickListener(view -> {
                     publish("1", "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Info");

@@ -1,5 +1,9 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +54,8 @@ public class GraficoPhActivity extends AppCompatActivity {
 
     int cont = 0;
 
+    String idEstufa;
+
     long tempo;
     long tempoAntes = 0;
 
@@ -57,6 +63,9 @@ public class GraficoPhActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grafico);
+
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        idEstufa = sharedpreferences.getString("idEstufa", "");
 
         barChart = findViewById(R.id.barchart);
         graph_1D = findViewById(R.id.button_graph_1D);
@@ -68,17 +77,19 @@ public class GraficoPhActivity extends AppCompatActivity {
         graph_1D.setOnClickListener(view -> {
             cont = 0;
             barEntries.clear();
-            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/pH/Grafico1D");
+            publish(idEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/pH/Grafico1D");
         });
 
         graph_1S.setOnClickListener(view -> {
             cont = 0;
-            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/pH/Grafico1S");
+            barEntries.clear();
+            publish(idEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/pH/Grafico1S");
         });
 
         graph_1M.setOnClickListener(view -> {
             cont = 0;
-            publish(message, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/pH/Grafico1M");
+            barEntries.clear();
+            publish(idEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Sensores/pH/Grafico1M");
         });
 
         /*
@@ -159,6 +170,14 @@ public class GraficoPhActivity extends AppCompatActivity {
                     BarEntry barEntry = new BarEntry(cont, valor);
                     barEntries.add(barEntry);
                     cont++;
+
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "pH");
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    barDataSet.setDrawValues(false);
+                    barChart.setData(new BarData(barDataSet));
+                    barChart.animateY(5000);
+                    barChart.getDescription().setText("Valores do pH");
+                    barChart.getDescription().setTextColor(Color.BLUE);
                 }
 
                 if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/MediasSemanas")) {
@@ -167,10 +186,15 @@ public class GraficoPhActivity extends AppCompatActivity {
                     BarEntry barEntry = new BarEntry(cont, valor);
                     barEntries.add(barEntry);
                     cont++;
+
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "pH");
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    barDataSet.setDrawValues(false);
+                    barChart.setData(new BarData(barDataSet));
+                    barChart.animateY(5000);
+                    barChart.getDescription().setText("Valores do pH");
+                    barChart.getDescription().setTextColor(Color.BLUE);
                 }
-
-
-
 
             }
             @Override
@@ -204,7 +228,7 @@ public class GraficoPhActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(message, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/pH/Grafico1D");
+                                publish(idEstufa, "Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/pH/Grafico1D");
                                 auxParaPublicarUmaVez = false;
                             }
 

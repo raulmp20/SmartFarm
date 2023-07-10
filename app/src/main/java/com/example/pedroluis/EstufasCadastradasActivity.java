@@ -40,10 +40,10 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
     String message = "1";
 
     private ListView listView;
-
+    String telefoneUser;
+    String emailUser;
     private List<String> IdEstufaList;
     private ArrayAdapter<String> adapter;
-    String emailUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,6 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         mqttHelper = new MqttHelper();
 
         IdEstufaList = new ArrayList<>();
-
 
 
         listView = findViewById(R.id.lista_estufas);
@@ -84,14 +83,16 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         });
 
         nova_estufa.setOnClickListener(view -> {
-            Intent novo = new Intent(EstufasCadastradasActivity.this, QRCodeScannerActivity.class);
-
+            Intent novo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
+            novo.putExtra("emailA", emailUser);
+            novo.putExtra("telefoneA", telefoneUser);
             startActivity(novo);
         });
 
         voltar.setOnClickListener(view -> {
             Intent back = new Intent(EstufasCadastradasActivity.this, MenuUsuarioActivity.class);
-
+            back.putExtra("emailUser", emailUser);
+            back.putExtra("telefoneUser", telefoneUser);
             startActivity(back);
         });
     }
