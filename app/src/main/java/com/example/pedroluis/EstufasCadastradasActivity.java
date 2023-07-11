@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -83,7 +84,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         });
 
         nova_estufa.setOnClickListener(view -> {
-            Intent novo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
+            Intent novo = new Intent(EstufasCadastradasActivity.this, QRCodeScannerActivity.class);
             novo.putExtra("emailA", emailUser);
             novo.putExtra("telefoneA", telefoneUser);
             startActivity(novo);
@@ -137,6 +138,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
         try {
 
             mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
 
@@ -146,6 +148,8 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                     disconnectedBufferOptions.setPersistBuffer(false);
                     disconnectedBufferOptions.setDeleteOldestMessages(false);
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                    Toast.makeText(EstufasCadastradasActivity.this, "DEU CERTO", Toast.LENGTH_SHORT).show();
+
                     //subscribeToTopic();
                     try {
                         mqttAndroidClient.subscribe("Smart_Farm/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {

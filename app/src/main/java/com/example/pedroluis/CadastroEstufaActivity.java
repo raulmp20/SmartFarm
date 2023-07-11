@@ -51,7 +51,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
     private MqttHelper mqttHelper;
     private String switchState = "0";
     SwitchCompat botaoSwitch1;
-
+    String pos_spinner;
     String emailUser;
     String item_spinner;
     String code;
@@ -96,9 +96,9 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
 
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("product1");
-        arrayList.add("product2");
-        arrayList.add("product3");
+        arrayList.add("Alface");
+        arrayList.add("Couve");
+        arrayList.add("Morango");
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
         Spinner spinner = findViewById(R.id.Cadastro_Estufas_spinner);
@@ -108,6 +108,9 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String item = adapterView.getItemAtPosition(position).toString();
+                pos_spinner = Integer.toString(position);
+                Toast.makeText(CadastroEstufaActivity.this, pos_spinner, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CadastroEstufaActivity.this, item, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -209,7 +212,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+item_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                                publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
                                 //Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
 
                                 //,startActivity(intent);

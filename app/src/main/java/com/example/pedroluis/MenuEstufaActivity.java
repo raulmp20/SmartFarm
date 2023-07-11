@@ -102,13 +102,11 @@ public class MenuEstufaActivity extends AppCompatActivity {
         config.setOnClickListener(v-> {
             // mudando para tela de config
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
-            publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
             startActivity(mudar);
         });
         config_image.setOnClickListener(v ->{
             // mudando a tela para a tela das informações do ph
             Intent mudar = new Intent(MenuEstufaActivity.this,ConfigEstufaActivity.class);
-            publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
             startActivity(mudar);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();

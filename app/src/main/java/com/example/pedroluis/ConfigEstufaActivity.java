@@ -27,8 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -37,33 +41,33 @@ import java.util.ArrayList;
 
 public class ConfigEstufaActivity extends AppCompatActivity {
     // Pra consultar o banco de dados
-    public MqttAndroidClient mqttAndroidClient;
+    private MqttAndroidClient mqttAndroidClient;
+
     // Acessar o banco de dados, var. aux. para banco de dados
-    MqttHelper mqttHelper;
+    private MqttHelper mqttHelper;
+    private String valorRecebido;
     private String switchState1 = "0";
+    String mensagem;
     String emailAntes;
     String telefoneAntes;
     String nome_estufa;
     private TextView caixa_nomeEstufa;
     SwitchCompat botaoSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mqttHelper = new MqttHelper();
+        JoaoMqtt();
         setContentView(R.layout.activity_config_estufa);
-        startMqtt();
 
-        Bundle extras = getIntent().getExtras();
-        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        nome_estufa = sharedpreferences.getString("estufa", "");
-        caixa_nomeEstufa = findViewById(R.id.estufa_nome_atual);
-
-        caixa_nomeEstufa.setText(nome_estufa);
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
         novo_nome_att = findViewById(R.id.estufa_novo_nome);
-
-
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        nome_estufa = sharedpreferences.getString("estufa", "");
+        caixa_nomeEstufa = findViewById(R.id.estufa_nome_atual);
+        caixa_nomeEstufa.setText(nome_estufa);
         botaoSwitch = (SwitchCompat) findViewById(R.id.switch2);
         // Botão "salvar"
         Button salvar;
@@ -79,10 +83,13 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                 if (isChecked) {
                     switchState1 = "1";
                     Toast.makeText(ConfigEstufaActivity.this, "Ligado", Toast.LENGTH_SHORT).show();
+
                 } else {
                     switchState1 = "0";
                     Toast.makeText(ConfigEstufaActivity.this, "desligado", Toast.LENGTH_SHORT).show();
+
                 }
+
             }
         });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -132,61 +139,99 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         });
     }
 
-    private void startMqtt() {
-        mqttHelper = new MqttHelper(getApplicationContext());
-        mqttHelper.setCallback(new MqttCallbackExtended() {
+    private void JoaoMqtt() {
+        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), mqttHelper.getServerUri(), mqttHelper.getClientId());
+        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
-                System.out.println("MQTT OK");
+                Log.w("mqtt", s);
             }
 
             @Override
             public void connectionLost(Throwable throwable) {
-                // Aparece essa mensagem sempre que a conexão for perdida
-                Toast.makeText(getApplicationContext(), "Conexão perdida", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            // messageArrived é uma função que é chamada toda vez que o cliente MQTT recebe uma mensagem
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Debug", mqttMessage.toString());
-                if (topic.equals("Smart_Farm/" + mqttHelper.getClientId() + "/Estufa/Atualiza/Status")) {
-                    switch (mqttMessage.toString()) {
-                        // TROCAR: 00 -> E-mail não encontrado, 01 -> Pin inválido, 11 -> Senha atualizada
-                        case ("00"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Falha ao atualizar", Toast.LENGTH_SHORT).show();
-                            break;
-                        case ("10"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Nome já existe", Toast.LENGTH_SHORT).show();
-                            break;
-                        case ("11"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Nome atualizado", Toast.LENGTH_SHORT).show();
-                            Intent saveNome = new Intent(ConfigEstufaActivity.this, MenuEstufaActivity.class);
-                            startActivity(saveNome);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                if (topic.equals("Smart_Farm/Atualiza/StatusPin")) {
-                    switch (mqttMessage.toString()) {
-                        case ("0"):
-                            Toast.makeText(ConfigEstufaActivity.this, "E-mail não encontrado", Toast.LENGTH_SHORT).show();
-                            break;
-                        case ("1"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Pin Enviado", Toast.LENGTH_SHORT).show();
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                Log.w("Mqtt", mqttMessage.toString());
 
+                // Exibindo na tela os retornos do Banco de Dados
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufas/Dados")) {
+                    valorRecebido = mqttMessage.toString();
+                    Toast.makeText(ConfigEstufaActivity.this, valorRecebido, Toast.LENGTH_SHORT).show();
+                }
             }
-
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
             }
+
         });
+        //connect();
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setAutomaticReconnect(true);
+        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setUserName(mqttHelper.getUsername());
+        mqttConnectOptions.setPassword(mqttHelper.getPassword().toCharArray());
+
+        try {
+
+            mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+
+                    DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+                    disconnectedBufferOptions.setBufferEnabled(true);
+                    disconnectedBufferOptions.setBufferSize(100);
+                    disconnectedBufferOptions.setPersistBuffer(false);
+                    disconnectedBufferOptions.setDeleteOldestMessages(false);
+                    mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                    Toast.makeText(ConfigEstufaActivity.this, "DEU CERTO", Toast.LENGTH_SHORT).show();
+
+                    //subscribeToTopic();
+                    try {
+                        mqttAndroidClient.subscribe("Smart_Farm/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w("Mqtt", "Subscribed!");
+                                publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
+                            }
+
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w("Mqtt", "Subscribed fail!");
+                            }
+                        });
+
+                    } catch (MqttException ex) {
+                        System.err.println("Exceptionst subscribing");
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.w("Mqtt", "Failed to connect to: " + mqttHelper.getServerUri() + exception.toString());
+                }
+            });
+
+
+        } catch (MqttException ex) {
+            ex.printStackTrace();
+        }
+    }
+    //Bloco que envia comandos para o broker
+    void publish(String payload, String topic) {
+        byte[] encodedPayload = new byte[0];
+        //teste de conexão
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            mqttAndroidClient.publish(topic, message);
+        } catch (UnsupportedEncodingException | MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     //Bloco que envia comandos para o broker
