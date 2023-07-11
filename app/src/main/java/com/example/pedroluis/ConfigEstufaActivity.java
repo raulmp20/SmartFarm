@@ -45,7 +45,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
     // Acessar o banco de dados, var. aux. para banco de dados
     private MqttHelper mqttHelper;
-    private String valorRecebido;
+
     private String switchState1 = "0";
     String mensagem;
     String emailAntes;
@@ -53,13 +53,17 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     String nome_estufa;
     private TextView caixa_nomeEstufa;
     SwitchCompat botaoSwitch;
-
+    String valores_estufa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mqttHelper = new MqttHelper();
         JoaoMqtt();
         setContentView(R.layout.activity_config_estufa);
+        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        valores_estufa = sharedpreferences.getString("valores", "");
+
+        Toast.makeText(ConfigEstufaActivity.this, valores_estufa, Toast.LENGTH_SHORT).show();
 
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
@@ -137,6 +141,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
             startActivity(mudar);
         });
+
     }
 
     private void JoaoMqtt() {
@@ -155,11 +160,6 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
 
-                // Exibindo na tela os retornos do Banco de Dados
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufas/Dados")) {
-                    valorRecebido = mqttMessage.toString();
-                    Toast.makeText(ConfigEstufaActivity.this, valorRecebido, Toast.LENGTH_SHORT).show();
-                }
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
@@ -195,7 +195,6 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
-                                publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
                             }
 
                             @Override

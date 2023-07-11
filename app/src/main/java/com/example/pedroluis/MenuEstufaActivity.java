@@ -35,7 +35,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
 
     String firstCheckMain = "Tgg";
     // Passando esse parâmrtro para as próximas telas
-
+    private String valorRecebido;
     public static final String SHARED_PREFS = "shared_prefs";
     String nome_estufa;
     String idEstufa;
@@ -217,7 +217,13 @@ public class MenuEstufaActivity extends AppCompatActivity {
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
-
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufas/Dados")){
+                    valorRecebido = mqttMessage.toString();
+                    sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("valores", valorRecebido);
+                    editor.apply();
+                }
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/idEstufa")){
                     idEstufa = mqttMessage.toString();
                     sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
@@ -259,6 +265,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
                                 publish(nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/idEstufa/Info");
+                                publish(nome_estufa, "Smart_Farm/" + mqttHelper.getClientId() + "/GetEstufas/Dados");
                                 auxParaPublicarUmaVez = false;
                             }
 
