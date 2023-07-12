@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/logotipo_login"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="70dp"
         android:layout_height="150dp"
         android:src="@drawable/logotipo_cadastro"
@@ -43,35 +43,74 @@
         app:layout_constraintTop_toBottomOf="@+id/config" />
 
     <TextView
-        android:id="@+id/estufa_nome_atual"
-        android:background="@drawable/button_contorno"
-        android:layout_width="310dp"
-        android:layout_height="48dp"
-        android:textSize="22dp"
+        android:id="@+id/estufa_nome_nome"
         style="@style/TextView"
-        android:textColor="@color/White"
-        android:gravity="center_vertical|center_horizontal"
+        android:layout_width="140dp"
+        android:layout_marginTop="20dp"
+        android:text="NOME:"
         android:textAlignment="center"
-        android:layout_marginTop="30dp"
-        android:hint=""
-        android:imeOptions="actionSend"
-        android:textColorHint="@color/White"
+        android:textColor="@color/White"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_config" />
+        app:layout_constraintTop_toBottomOf="@id/img_config" />
+
+    <TextView
+        android:id="@+id/estufa_nome_atual"
+        style="@style/TextView"
+        android:layout_width="130dp"
+        android:layout_marginTop="88dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.152"
+        app:layout_constraintStart_toEndOf="@id/estufa_nome_nome"
+        app:layout_constraintTop_toTopOf="@id/img_config" />
+
+    <TextView
+        android:id="@+id/estufa_nome_prod"
+        style="@style/TextView"
+        android:layout_width="140dp"
+        android:layout_marginTop="10dp"
+        android:text="PRODUÇÃO:"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/estufa_nome_atual" />
+
+    <TextView
+        android:id="@+id/estufa_prod_atual"
+        style="@style/TextView"
+        android:layout_width="130dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.69"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/estufa_nome_nome" />
+
     <EditText
         android:id="@+id/estufa_novo_nome"
         android:background="@drawable/button_contorno"
         android:layout_width="310dp"
         android:layout_height="48dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:hint="NOVO NOME DA ESTUFA"
         android:imeOptions="actionSend"
         android:textColorHint="@color/White"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/estufa_nome_atual" />
+        app:layout_constraintTop_toBottomOf="@+id/estufa_prod_atual" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch2"
@@ -82,7 +121,7 @@
         android:text="LIGAR NOTIFICAÇÕES: "
         android:textColor="@color/White"
         android:textSize="20dp"
-        android:checked="true"
+
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -52,8 +52,15 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     String telefoneAntes;
     String nome_estufa;
     private TextView caixa_nomeEstufa;
+    private TextView caixa_prodEstufa;
+    String [] valores_separados;
     SwitchCompat botaoSwitch;
     String valores_estufa;
+    int switch_value;
+    int spinner_value;
+
+    boolean switch_bool;
+    boolean spinner_bool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +70,12 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         valores_estufa = sharedpreferences.getString("valores", "");
 
-        Toast.makeText(ConfigEstufaActivity.this, valores_estufa, Toast.LENGTH_SHORT).show();
+        //setando inicialmente valor do switch e spinner
+        valores_separados = valores_estufa.split("/");
+        switch_value = Integer.parseInt(valores_separados[0]);
+        spinner_value = Integer.parseInt(valores_separados[1]);
+        switch_bool = (switch_value != 0);
+
 
         // Pegando as informações das caixas texto
         EditText novo_nome_att;
@@ -71,8 +83,11 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         nome_estufa = sharedpreferences.getString("estufa", "");
         caixa_nomeEstufa = findViewById(R.id.estufa_nome_atual);
+        caixa_prodEstufa = findViewById(R.id.estufa_prod_atual);
         caixa_nomeEstufa.setText(nome_estufa);
         botaoSwitch = (SwitchCompat) findViewById(R.id.switch2);
+        botaoSwitch.setChecked(switch_bool);
+
         // Botão "salvar"
         Button salvar;
         salvar = findViewById(R.id.button_salvar_config);
@@ -81,6 +96,18 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         voltar = findViewById(R.id.button_voltar_config);
 
         Spinner spinner = findViewById(R.id.plants_spinner);
+        switch (spinner_value) {
+            case 0:
+                caixa_prodEstufa.setText("Alface");
+                break;
+            case 1:
+                caixa_prodEstufa.setText("Couve");
+                break;
+            case 2:
+                caixa_prodEstufa.setText("Morango");
+                break;
+        }
+
         botaoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -113,6 +140,8 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         arrayList.add("Alface");
         arrayList.add("Couve");
         arrayList.add("Morango");
+
+        spinner.setSelection(spinner_value);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
 
