@@ -159,7 +159,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
             // Verificando se a senha é igual a senha confirmada
             if (!nomeNovo.isEmpty()) {
-                mqttHelper.publish(nomeNovo+"/"+switchState1+"/"+pos_spinner1, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                mqttHelper.publish(nomeNovo+"/"+switchState1+"/"+pos_spinner1+"/"+nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/AtualizaEstufa/Dados");
 
                 //startActivity(salvar_info);
             } else {
@@ -287,9 +287,20 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
-                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/AltDados/Status")){
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/AtualizaStatus/Status")){
+                    switch (mqttMessage.toString()) {
+                        case ("0"):
+                            Toast.makeText(ConfigEstufaActivity.this, "Troca Não Efetuada", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ("1"):
+                            Toast.makeText(ConfigEstufaActivity.this, "Entrei aqui vei", Toast.LENGTH_SHORT).show();
 
+                            break;
+
+                    }
                 }
+                Intent mudar = new Intent(ConfigEstufaActivity.this, EstufasCadastradasActivity.class);
+                startActivity(mudar);
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
