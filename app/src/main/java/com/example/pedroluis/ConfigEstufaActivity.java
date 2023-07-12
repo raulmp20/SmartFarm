@@ -3,12 +3,14 @@ package com.example.pedroluis;
 import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
 import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-
+import android.content.DialogInterface;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -151,22 +153,33 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         // Atualizando os dados
-        salvar.setOnClickListener(v -> {
-
+        salvar.setOnClickListener(new View.OnClickListener(){
             // Pegando as informações dos EditText e adicionando a uma string
-            String nomeNovo = novo_nome_att.getText().toString();
-            //Intent salvar_info = new Intent(ConfigEstufaActivity.this, EstufasCadastradasActivity.class);
 
-            // Verificando se a senha é igual a senha confirmada
-            if (!nomeNovo.isEmpty()) {
-                mqttHelper.publish(nomeNovo+"/"+switchState1+"/"+pos_spinner1+"/"+nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/AtualizaEstufa/Dados");
 
-                //startActivity(salvar_info);
-            } else {
-                Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder confirmaConversa = new AlertDialog.Builder(ConfigEstufaActivity.this);
+                confirmaConversa.setTitle("Alterar Dados");
+                confirmaConversa.setMessage("Confirmas alterações na Estufas?");
+                confirmaConversa.setCancelable(false);
+                String nomeNovo = novo_nome_att.getText().toString();
+                confirmaConversa.setPositiveButton("Confirmar Mudanças", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        if (!nomeNovo.isEmpty()) {
+                            //A MAGICA É AQUI
+                            mqttHelper.publish(nomeNovo+"/"+switchState1+"/"+pos_spinner1+"/"+nome_estufa, "Smart_Farm/"+mqttHelper.getClientId()+"/AtualizaEstufa/Dados");
+
+                            //startActivity(salvar_info);
+                        } else {
+                            Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                confirmaConversa.setNegativeButton("Cancelar", null);
+                confirmaConversa.create().show();
             }
-
-
         });
         // Voltando ao menu
         voltar.setOnClickListener(v -> {
