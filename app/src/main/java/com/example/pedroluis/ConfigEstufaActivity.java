@@ -55,17 +55,18 @@ public class ConfigEstufaActivity extends AppCompatActivity {
     private TextView caixa_prodEstufa;
     String [] valores_separados;
     SwitchCompat botaoSwitch;
+    String pos_spinner1;
     String valores_estufa;
     int switch_value;
     int spinner_value;
 
     boolean switch_bool;
-    boolean spinner_bool;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mqttHelper = new MqttHelper();
-        JoaoMqtt();
+
+        startMqtt();
         setContentView(R.layout.activity_config_estufa);
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         valores_estufa = sharedpreferences.getString("valores", "");
@@ -127,6 +128,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String item = adapterView.getItemAtPosition(position).toString();
+                pos_spinner1 = Integer.toString(position);
             }
 
             @Override
@@ -153,10 +155,13 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
             // Pegando as informações dos EditText e adicionando a uma string
             String nomeNovo = novo_nome_att.getText().toString();
+            //Intent salvar_info = new Intent(ConfigEstufaActivity.this, EstufasCadastradasActivity.class);
 
             // Verificando se a senha é igual a senha confirmada
             if (!nomeNovo.isEmpty()) {
-                mqttHelper.publish(nomeNovo, "Smart_Farm/" + mqttHelper.getClientId() + "/Estufa/Atualiza/Nome");
+                mqttHelper.publish(nomeNovo+"/"+switchState1+"/"+pos_spinner1, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+
+                //startActivity(salvar_info);
             } else {
                 Toast.makeText(ConfigEstufaActivity.this, "Digite um novo nome", Toast.LENGTH_SHORT).show();
             }
@@ -173,7 +178,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
 
     }
 
-    private void JoaoMqtt() {
+    /*private void JoaoMqtt() {
         mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), mqttHelper.getServerUri(), mqttHelper.getClientId());
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -216,7 +221,6 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                     disconnectedBufferOptions.setPersistBuffer(false);
                     disconnectedBufferOptions.setDeleteOldestMessages(false);
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
-                    Toast.makeText(ConfigEstufaActivity.this, "DEU CERTO", Toast.LENGTH_SHORT).show();
 
                     //subscribeToTopic();
                     try {
@@ -224,6 +228,9 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!");
+                                mqttHelper.publish("lanna_olha_ai" , "Smart_Farm/" + mqttHelper.getClientId() + "/Estufa/Atualiza/Nome");
+                                Toast.makeText(ConfigEstufaActivity.this, "testefoda", Toast.LENGTH_SHORT).show();
+
                             }
 
                             @Override
@@ -260,8 +267,34 @@ public class ConfigEstufaActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException | MqttException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     //Bloco que envia comandos para o broker
+
+    private void startMqtt() {
+        mqttHelper = new MqttHelper(getApplicationContext());
+        mqttHelper.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean b, String s) {
+            }
+            @Override
+            public void connectionLost(Throwable throwable) {
+                //Aparece essa mensagem sempre que a conexão for perdida
+                //Toast.makeText(getApplicationContext(), "Conexão perdida", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            // messageArrived é uma função que é chamada toda vez que o cliente MQTT recebe uma mensagem
+            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                Log.w("Debug", mqttMessage.toString());
+                // Exibindo na tela os retornos do Banco de Dados
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/AltDados/Status")){
+
+                }
+            }
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+            }
+        });
+    }
 
 }
