@@ -293,7 +293,6 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                             Toast.makeText(ConfigEstufaActivity.this, "Troca Não Efetuada", Toast.LENGTH_SHORT).show();
                             break;
                         case ("1"):
-                            Toast.makeText(ConfigEstufaActivity.this, "Entrei aqui vei", Toast.LENGTH_SHORT).show();
 
                             break;
 
