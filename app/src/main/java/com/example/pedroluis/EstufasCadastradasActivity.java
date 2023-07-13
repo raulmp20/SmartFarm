@@ -1,6 +1,7 @@
 package com.example.pedroluis;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -43,6 +45,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
 
     private ListView listView;
     String telefoneUser;
+    String nomeEstufa;
     String emailUser;
     private List<String> IdEstufaList;
     private ArrayAdapter<String> adapter;
@@ -86,10 +89,29 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
 
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(EstufasCadastradasActivity.this, "Mim dê papai", Toast.LENGTH_SHORT).show();
+                Object listItem = listView.getItemAtPosition(position);
+                nomeEstufa = listItem.toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(EstufasCadastradasActivity.this);
+                builder.setTitle("Excluir estufa")
+                        .setMessage("Gostaria de excluir este módulo?")
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                publish(nomeEstufa, "Smart_Farm/" + mqttHelper.getClientId() + "/Estufas/Delete");
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Ação ao pressionar o botão "Cancelar" do AlertDialog
 
+                            }
+                        })
+                        .create()
+                        .show();
                 return false;
             }
         });
@@ -133,6 +155,10 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
 
                     listView.setAdapter(adapter);
                 }
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufas/Apaguei")) {
+                    Intent reinicia = new Intent(EstufasCadastradasActivity.this, MenuUsuarioActivity.class);
+                    startActivity(reinicia);
+                }
             }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
@@ -160,7 +186,6 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                     disconnectedBufferOptions.setPersistBuffer(false);
                     disconnectedBufferOptions.setDeleteOldestMessages(false);
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
-
                     //subscribeToTopic();
                     try {
                         mqttAndroidClient.subscribe("Smart_Farm/"+mqttHelper.getClientId()+"/#", 0, null, new IMqttActionListener() {

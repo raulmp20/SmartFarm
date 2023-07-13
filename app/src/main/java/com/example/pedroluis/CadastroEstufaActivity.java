@@ -72,11 +72,12 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras.getString("code") != null){
+            //Aqui farei a lógica que permitirá Qr Codes com a chave de permissão
             code = extras.getString("code");
+            code2 = Integer.valueOf(code);
         }
 
-        //passando qrcode para tipo int
-        code2 = Integer.valueOf(code);
+
 
 
 
