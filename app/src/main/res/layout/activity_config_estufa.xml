@@ -98,19 +98,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/estufa_nome_nome" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/estufa_novo_nome"
         android:background="@drawable/button_contorno"
         android:layout_width="310dp"
         android:layout_height="48dp"
         android:layout_marginTop="25dp"
-        android:hint="NOVO NOME DA ESTUFA"
+        android:hint="NOVO NOME"
         android:imeOptions="actionSend"
         android:textColorHint="@color/White"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/estufa_prod_atual" />
+        app:layout_constraintTop_toBottomOf="@+id/estufa_prod_atual">
+    </com.google.android.material.textfield.TextInputEditText>
+
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch2"

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,12 +75,22 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                 Intent goInfo = new Intent(EstufasCadastradasActivity.this, MenuEstufaActivity.class);
                 //envia o conteudo da notificacao através de um putExtra
 
+
                 sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("estufa",listItem.toString());
 
                 editor.apply();
                 startActivity(goInfo);
+            }
+
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(EstufasCadastradasActivity.this, "Mim dê papai", Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
 
@@ -119,6 +130,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                     IdEstufaList.add(mqttMessage.toString());
 
                     adapter = new ArrayAdapter<String>(EstufasCadastradasActivity.this,android.R.layout.simple_list_item_1,IdEstufaList);
+
                     listView.setAdapter(adapter);
                 }
             }
@@ -148,7 +160,6 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                     disconnectedBufferOptions.setPersistBuffer(false);
                     disconnectedBufferOptions.setDeleteOldestMessages(false);
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
-                    Toast.makeText(EstufasCadastradasActivity.this, "DEU CERTO", Toast.LENGTH_SHORT).show();
 
                     //subscribeToTopic();
                     try {

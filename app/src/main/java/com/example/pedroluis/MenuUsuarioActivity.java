@@ -113,7 +113,7 @@ public class MenuUsuarioActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela main
-            Intent sair = new Intent(MenuUsuarioActivity.this,MainActivity.class);
+            Intent sair = new Intent(MenuUsuarioActivity.this,LoginActivity.class);
             startActivity(sair);
             // Exclui essa tela ao sair para não guardar as info que pus nela
             onRestart();

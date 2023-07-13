@@ -120,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                     sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("email",email);
+                    editor.putString("senha",senha);
                     editor.putString("telefone", telefoneL);
                     editor.apply();
 
