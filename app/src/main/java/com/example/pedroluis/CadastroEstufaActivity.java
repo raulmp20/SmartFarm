@@ -187,6 +187,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             break;
                         case ("0"):
                             publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+
                             break;
                     }
                 }
@@ -223,7 +224,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(estufa+"/"+emailUser, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/pesquisa");
+                                publish(estufa+"/"+emailUser, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/pesquisaInicial");
 
                                 //publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
                                 //Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
