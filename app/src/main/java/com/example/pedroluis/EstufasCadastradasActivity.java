@@ -42,7 +42,9 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
     // Chaves constantes para sharedpreferences
     public static final String SHARED_PREFS = "shared_prefs";
     String message = "1";
-
+    @Override
+    public void onBackPressed() {
+    }
     private ListView listView;
     String telefoneUser;
     String nomeEstufa;
@@ -156,7 +158,7 @@ public class EstufasCadastradasActivity extends AppCompatActivity {
                     listView.setAdapter(adapter);
                 }
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Estufas/Apaguei")) {
-                    Intent reinicia = new Intent(EstufasCadastradasActivity.this, MenuUsuarioActivity.class);
+                    Intent reinicia = new Intent(EstufasCadastradasActivity.this, EstufasCadastradasActivity.class);
                     startActivity(reinicia);
                 }
             }

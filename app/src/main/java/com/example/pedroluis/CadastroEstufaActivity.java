@@ -180,6 +180,16 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Mqtt", mqttMessage.toString());
                 // Exibindo na tela os retornos do Banco de Dados
+                if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/pesquisa/Status")){
+                    switch (mqttMessage.toString()){
+                        case ("1"):
+                            Toast.makeText(CadastroEstufaActivity.this, "Uma Estufa com este nome já está registrada!", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ("0"):
+                            publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                            break;
+                    }
+                }
 
             }
             @Override
@@ -213,7 +223,9 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w("Mqtt", "Subscribed!!!!");
-                                publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                                publish(estufa+"/"+emailUser, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/pesquisa");
+
+                                //publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
                                 //Intent intent = new Intent(CadastroEstufaActivity.this,EstufasCadastradasActivity.class);
 
                                 //,startActivity(intent);

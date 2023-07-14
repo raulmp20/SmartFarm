@@ -29,6 +29,9 @@ public class LoginActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "shared_prefs";
     String email;
     String senha;
+    @Override
+    public void onBackPressed() {
+    }
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

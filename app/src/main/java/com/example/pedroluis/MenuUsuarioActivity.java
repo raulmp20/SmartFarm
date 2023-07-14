@@ -1,6 +1,11 @@
 package com.example.pedroluis;
 
+import static com.example.pedroluis.UsuarioActivity.SHARED_PREFS;
+import static com.example.pedroluis.UsuarioActivity.sharedpreferences;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
@@ -14,7 +19,9 @@ public class MenuUsuarioActivity extends AppCompatActivity {
     // Passando esse parâmrtro para as próximas telas
     String telefoneUser;
     String emailUser;
-
+    @Override
+    public void onBackPressed() {
+    }
     @Override  // coloca coisas basicas da tela, funcionalidades
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +120,12 @@ public class MenuUsuarioActivity extends AppCompatActivity {
 
         voltar.setOnClickListener(v-> {
             // mudando a tela para a tela main
+            sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            editor.putString("email",null);
+            editor.putString("senha",null);
+            editor.apply();
             Intent sair = new Intent(MenuUsuarioActivity.this,LoginActivity.class);
             startActivity(sair);
             // Exclui essa tela ao sair para não guardar as info que pus nela
