@@ -86,10 +86,8 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     switchState = "1";
-                    Toast.makeText(CadastroEstufaActivity.this, "Ligado", Toast.LENGTH_SHORT).show();
                 }else{
                     switchState = "0";
-                    Toast.makeText(CadastroEstufaActivity.this, "desligado", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -110,8 +108,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String item = adapterView.getItemAtPosition(position).toString();
                 pos_spinner = Integer.toString(position);
-                Toast.makeText(CadastroEstufaActivity.this, pos_spinner, Toast.LENGTH_SHORT).show();
-                Toast.makeText(CadastroEstufaActivity.this, item, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -134,7 +131,6 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
         escanear.setOnClickListener(new View.OnClickListener() {
 
-            Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
 
             public void onClick(View view) {
 
@@ -150,7 +146,6 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                     intent.putExtra("spinnerValue", item_spinner);*/
                     JoaoMqtt();
 
-                    startActivity(intent);
                 }
 
             }
@@ -187,7 +182,9 @@ public class CadastroEstufaActivity extends AppCompatActivity {
                             break;
                         case ("0"):
                             publish(code2+"/"+estufa+"/"+switchState+"/"+emailUser+"/"+pos_spinner, "Smart_Farm/"+mqttHelper.getClientId()+"/CadastroEstufa/dados");
+                            Intent intent = new Intent(CadastroEstufaActivity.this, EstufasCadastradasActivity.class);
 
+                            startActivity(intent);
                             break;
                     }
                 }

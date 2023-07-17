@@ -12,8 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.PedroLuis"
-        android:requestLegacyExternalStorage="true"
         >
+        <!--android:requestLegacyExternalStorage="true"-->
         <!--a linha acima requestLegacy faz o mapa funcionar NÃO MEXER-->
 
         <meta-data

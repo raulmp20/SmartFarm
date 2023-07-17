@@ -145,7 +145,7 @@ public class ConfirmTokenCadastroActivity extends AppCompatActivity {
                                     try {
                                         encodedPayload = emailUser.getBytes("UTF-8");
                                         MqttMessage message = new MqttMessage(encodedPayload);
-                                        mqttAndroidClient.publish("Smart_Farm/" + mqttHelper.getClientId() + "/Cadastro/SendEmail", message);
+                                        mqttAndroidClient.publish("Smart_Farm/" + mqttHelper.getClientId() + "/Cadastros/SendEmail", message);
                                     } catch (UnsupportedEncodingException | MqttException e) {
                                         e.printStackTrace();
                                     }

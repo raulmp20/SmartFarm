@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/logotipo_login"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="70dp"
         android:layout_height="150dp"
         android:src="@drawable/logotipo_cadastro"
@@ -119,28 +119,51 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
     <Button
         android:id="@+id/fazer_cadastro1"
         style="@style/Button_Cadastro"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="48dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:text="CADASTRAR"
         android:textColor="@color/White"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.789"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textFieldTelefoneCadastro" />
+
+    <Button
+        android:id="@+id/voltar_cadastro1"
+        style="@style/Button_Login"
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:text="VOLTAR"
+        android:textColor="@color/White"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textFieldTelefoneCadastro" />
+
+    <ProgressBar
+        android:id="@+id/Loading_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:outlineAmbientShadowColor="@color/White"
+        app:layout_constraintTop_toBottomOf="@id/fazer_cadastro1"
+        android:visibility="invisible"/>
 
     <!--Logo Smart Farm-->
     <ImageView
         android:id="@+id/logotipo_fundo"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_height="140dp"
         android:src="@drawable/logotipo_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fazer_cadastro1"
+        app:layout_constraintTop_toBottomOf="@id/Loading_bar"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="300dp"
         />

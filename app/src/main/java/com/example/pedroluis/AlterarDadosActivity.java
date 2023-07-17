@@ -1,11 +1,14 @@
 package com.example.pedroluis;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,7 +20,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class AlterarDadosActivity extends AppCompatActivity {
     MqttHelper mqttHelper;
-
+    private ProgressBar progressBar1;
     String emailAntes;
     String telefoneAntes;
 
@@ -29,6 +32,7 @@ public class AlterarDadosActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_dados);
+        progressBar1 = findViewById(R.id.Loading_bar1);
 
         //Email anterior é usado para que seja enviado o email p/troca de dados
         Bundle extras = getIntent().getExtras();
@@ -43,7 +47,7 @@ public class AlterarDadosActivity extends AppCompatActivity {
 
         // pra fazer algo quando clicamos no botão
         trocaDadosconfirm.setOnClickListener(view -> {
-
+                    new LoadDataTask().execute();
                     // atribuindo a "e-mail" o e-mail que eu escrever na tela
                     String email = email_alt.getText().toString();
                     // atribuindo a "senha" a senha que eu escrever na tela
@@ -76,7 +80,31 @@ public class AlterarDadosActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+    private class LoadDataTask extends AsyncTask<Void, Void, Void> {
 
+        @Override
+        protected void onPreExecute() {
+            // Antes de iniciar a tarefa, exibe a barra de progresso e oculta o botão
+            progressBar1.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // Simulação de carregamento de dados
+            try {
+                Thread.sleep(3000); // Espera de 3 segundos (simulando carregamento)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // Após o término da tarefa, oculta a barra de progresso e abre a próxima atividade
+            progressBar1.setVisibility(View.INVISIBLE);
+        }
+    }
     private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
         mqttHelper.setCallback(new MqttCallbackExtended() {

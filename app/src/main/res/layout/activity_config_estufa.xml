@@ -59,7 +59,7 @@
     <TextView
         android:id="@+id/estufa_nome_atual"
         style="@style/TextView"
-        android:layout_width="130dp"
+        android:layout_width="145dp"
         android:layout_marginTop="88dp"
         android:text=""
         android:textAlignment="center"

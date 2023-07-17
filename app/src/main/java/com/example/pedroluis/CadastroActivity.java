@@ -4,12 +4,14 @@ package com.example.pedroluis;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -20,7 +22,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class CadastroActivity extends AppCompatActivity {
-
+    @Override
+    public void onBackPressed() {
+    }
+    private ProgressBar progressBar;
     MqttHelper mqttHelper;
     String email_cadastro;
     String senha_cadastro;
@@ -38,7 +43,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
-
+        progressBar = findViewById(R.id.Loading_bar);
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         mqttHelper  = new MqttHelper();
         startMqtt();
@@ -50,21 +55,23 @@ public class CadastroActivity extends AppCompatActivity {
         EditText telefone_c = findViewById(R.id.confirmTelefoneCadastro);
 
         Button realizar_Cadastro = findViewById(R.id.fazer_cadastro1);
+        Button voltar_Cadastro = findViewById(R.id.voltar_cadastro1);
 
         realizar_Cadastro.setOnClickListener(view -> {
             senha_cadastro = senha_c.getText().toString();
             confirm_senha_cadastro = senha_c_confirm.getText().toString();
             email_cadastro = email_c.getText().toString();
             telefone_cadastro = telefone_c.getText().toString();
-
+            new LoadDataTask().execute();
             // Verificando se a senha é igual a senha confirmada
             if(senha_cadastro.equals(confirm_senha_cadastro) && !senha_cadastro.isEmpty()) {
                 // Aplicando REGEX no nome
                 // Aplicando REGEX no email
                 if (email_cadastro.matches("^[a-zA-Z0-9.]+@(gmail\\.com|hotmail\\.com|yahoo\\.com\\.br)$")) {
-                    mqttHelper.publish(telefone_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/Telefone");
-                    mqttHelper.publish(senha_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/Senha");
-                    mqttHelper.publish(email_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/E-mail");
+                    //mqttHelper.publish(telefone_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/Telefone");
+                    //mqttHelper.publish(senha_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/Senha");
+                    //mqttHelper.publish(email_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/E-mail");
+                    mqttHelper.publish(telefone_cadastro+"/"+senha_cadastro+"/"+email_cadastro, "Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/DadosTSE");
                 }
                 else if (!email_cadastro.isEmpty())
                     Toast.makeText(CadastroActivity.this, "Coloque um e-mail válido", Toast.LENGTH_SHORT).show();
@@ -86,7 +93,38 @@ public class CadastroActivity extends AppCompatActivity {
             }
 
         });
+
+        voltar_Cadastro.setOnClickListener(view ->{
+            Intent voltar = new Intent(CadastroActivity.this, LoginActivity.class);
+            startActivity(voltar);
+        });
     }
+    private class LoadDataTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            // Antes de iniciar a tarefa, exibe a barra de progresso e oculta o botão
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // Simulação de carregamento de dados
+            try {
+                Thread.sleep(3000); // Espera de 3 segundos (simulando carregamento)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // Após o término da tarefa, oculta a barra de progresso e abre a próxima atividade
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     private void startMqtt() {
         mqttHelper = new MqttHelper(getApplicationContext());
@@ -107,11 +145,9 @@ public class CadastroActivity extends AppCompatActivity {
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Cadastro/Status")){
                     switch (mqttMessage.toString()){
                         case ("01"):
-                            Toast.makeText(CadastroActivity.this, "Telefone já cadastrado", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CadastroActivity.this, "Telefone ou Email já cadastrado", Toast.LENGTH_SHORT).show();
                             break;
-                        case ("10"):
-                            Toast.makeText(CadastroActivity.this, "E-mail já cadastrado", Toast.LENGTH_SHORT).show();
-                            break;
+
                         case ("0"):
                             Toast.makeText(CadastroActivity.this, "Erro no cadastro, tente novamente", Toast.LENGTH_SHORT).show();
                             break;

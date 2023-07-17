@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imagem"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="70dp"
         android:layout_height="150dp"
         android:src="@drawable/logotipo_cadastro"
@@ -94,13 +94,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Numero_novo" />
-
+    <ProgressBar
+        android:id="@+id/Loading_bar1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:outlineAmbientShadowColor="@color/White"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/Numero_box_alt"
+        />
     <Button
         android:id="@+id/button_salvar_dados"
         style="@style/Button_Login"
         android:layout_width="180dp"
         android:layout_height="40dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="62dp"
         android:text="Salvar"
         android:textColor="@color/White"
         android:textSize="17sp"
