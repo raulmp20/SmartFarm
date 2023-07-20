@@ -150,12 +150,15 @@ public class GraficoLumiActivity extends AppCompatActivity {
                     barEntries.add(barEntry);
                     cont++;
 
-                    BarDataSet barDataSet = new BarDataSet(barEntries, "pH");
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "Luminosidade");
                     barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                    barDataSet.setDrawValues(false);
+                    //barDataSet.setDrawValues(false);
+                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextSize(16f);
+                    barChart.getDescription().setEnabled(true);
                     barChart.setData(new BarData(barDataSet));
                     barChart.animateY(5000);
-                    barChart.getDescription().setText("Valores do pH");
+                    barChart.getDescription().setText("Valores de Luminosidade");
                     barChart.getDescription().setTextColor(Color.BLUE);
                 }
 
@@ -166,6 +169,17 @@ public class GraficoLumiActivity extends AppCompatActivity {
                     BarEntry barEntry = new BarEntry(cont, valor);
                     barEntries.add(barEntry);
                     cont++;
+
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "Luminosidade");
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    //barDataSet.setDrawValues(false);
+                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextSize(16f);
+                    barChart.getDescription().setEnabled(true);
+                    barChart.setData(new BarData(barDataSet));
+                    barChart.animateY(5000);
+                    barChart.getDescription().setText("Valores de Luminosidade");
+                    barChart.getDescription().setTextColor(Color.BLUE);
                 }
 
                 if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/Lumi/MediasSemanas")) {
@@ -174,6 +188,17 @@ public class GraficoLumiActivity extends AppCompatActivity {
                     BarEntry barEntry = new BarEntry(cont, valor);
                     barEntries.add(barEntry);
                     cont++;
+
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "Luminosidade");
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    //barDataSet.setDrawValues(false);
+                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextSize(16f);
+                    barChart.getDescription().setEnabled(true);
+                    barChart.setData(new BarData(barDataSet));
+                    barChart.animateY(5000);
+                    barChart.getDescription().setText("Valores de Luminosidade");
+                    barChart.getDescription().setTextColor(Color.BLUE);
                 }
 
 

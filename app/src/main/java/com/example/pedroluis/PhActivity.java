@@ -45,6 +45,8 @@ public class PhActivity extends AppCompatActivity {
     TextView mediaDia;
     TextView valorInstantaneo;
     String val_inst;
+    String media_hora;
+    String media_dia;
     TextView modulo;
 
     String idEstufa;
@@ -126,11 +128,15 @@ public class PhActivity extends AppCompatActivity {
                     val_inst = mqttMessage.toString();
                     valorInstantaneo.setText(val_inst);
                 }
-                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmaHora"))
-                    mediaHora.setText(mqttMessage.toString());
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmaHora")) {
+                    media_hora = mqttMessage.toString();
+                    mediaHora.setText(media_hora);
+                }
 
-                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmDia"))
-                    mediaDia.setText(mqttMessage.toString());
+                if (topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/valorMedioUmDia")) {
+                    media_dia = mqttMessage.toString();
+                    mediaDia.setText(media_dia);
+                }
 
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/ph/Status"))
                     switch (mqttMessage.toString()){
