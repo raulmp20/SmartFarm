@@ -233,7 +233,7 @@ public class PhActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Log.w("Mqtt", "Failed to connect to: " + mqttHelper.getServerUri() + exception.toString());
                 }
             });

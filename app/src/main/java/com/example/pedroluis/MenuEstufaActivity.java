@@ -226,6 +226,7 @@ public class MenuEstufaActivity extends AppCompatActivity {
                 }
                 if(topic.equals("Smart_Farm/"+mqttHelper.getClientId()+"/Sensores/idEstufa")){
                     idEstufa = mqttMessage.toString();
+                    System.out.println(idEstufa);
                     sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("idEstufa", idEstufa);
