@@ -155,7 +155,7 @@ public class GraficoUmiArActivity extends AppCompatActivity {
                     BarDataSet barDataSet = new BarDataSet(barEntries, "Umidade do Ar");
                     barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                     //barDataSet.setDrawValues(false);
-                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextColor(Color.WHITE);
                     barDataSet.setValueTextSize(16f);
                     barChart.getDescription().setEnabled(true);
                     barChart.setData(new BarData(barDataSet));
@@ -175,7 +175,7 @@ public class GraficoUmiArActivity extends AppCompatActivity {
                     BarDataSet barDataSet = new BarDataSet(barEntries, "Umidade do Ar");
                     barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                     //barDataSet.setDrawValues(false);
-                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextColor(Color.WHITE);
                     barDataSet.setValueTextSize(16f);
                     barChart.getDescription().setEnabled(true);
                     barChart.setData(new BarData(barDataSet));
@@ -194,7 +194,7 @@ public class GraficoUmiArActivity extends AppCompatActivity {
                     BarDataSet barDataSet = new BarDataSet(barEntries, "Umidade do Ar");
                     barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                     //barDataSet.setDrawValues(false);
-                    barDataSet.setValueTextColor(Color.BLACK);
+                    barDataSet.setValueTextColor(Color.WHITE);
                     barDataSet.setValueTextSize(16f);
                     barChart.getDescription().setEnabled(true);
                     barChart.setData(new BarData(barDataSet));
