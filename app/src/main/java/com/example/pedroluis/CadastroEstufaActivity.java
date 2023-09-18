@@ -96,7 +96,7 @@ public class CadastroEstufaActivity extends AppCompatActivity {
 
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Alface");
-        arrayList.add("Couve");
+        arrayList.add("Pimenta");
         arrayList.add("Morango");
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);

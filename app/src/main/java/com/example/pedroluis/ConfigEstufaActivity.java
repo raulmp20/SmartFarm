@@ -104,7 +104,7 @@ public class ConfigEstufaActivity extends AppCompatActivity {
                 caixa_prodEstufa.setText("Alface");
                 break;
             case 1:
-                caixa_prodEstufa.setText("Couve");
+                caixa_prodEstufa.setText("Pimenta");
                 break;
             case 2:
                 caixa_prodEstufa.setText("Morango");
